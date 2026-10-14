@@ -1,0 +1,902 @@
+"use client";
+
+import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Sun,
+  Moon,
+  Menu,
+  X,
+  Phone,
+  Mail,
+  MapPin,
+  CheckCircle2,
+  ArrowRight,
+  ShieldCheck,
+  Globe2,
+  Sliders,
+  Landmark,
+  Building,
+  Home as HomeIcon,
+  ShoppingBag,
+  Briefcase,
+  Compass,
+  MessageCircle,
+  Sparkles,
+  Waves,
+  Clock,
+  Layers,
+  ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
+  Send,
+} from "lucide-react";
+
+export default function DirectionOneQuinta() {
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [fullscreenMenuOpen, setFullscreenMenuOpen] = useState(false);
+  const [activeStorySlide, setActiveStorySlide] = useState(0);
+  const [selectedAsset, setSelectedAsset] = useState<string>("Prime Land Plots");
+  const [selectedHorizon, setSelectedHorizon] = useState<string>("Capital Growth (3-5 Years)");
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const horizontalScrollRef = useRef<HTMLDivElement>(null);
+
+  // Sync data-theme on html root
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  };
+
+  const scrollHorizontal = (direction: "left" | "right") => {
+    if (horizontalScrollRef.current) {
+      const offset = direction === "left" ? -460 : 460;
+      horizontalScrollRef.current.scrollBy({ left: offset, behavior: "smooth" });
+    }
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormSubmitted(true);
+    setTimeout(() => setFormSubmitted(false), 7000);
+  };
+
+  // 5 Destinations for the Quinta da Malia-style Horizontal Story Slider
+  const destinations = [
+    {
+      id: "el-gouna",
+      num: "01",
+      name: "El Gouna",
+      sub: "Venetian Lagoons & Private Moorings",
+      image: "/img-el-gouna.jpg",
+      coordinates: "27.3949° N, 33.6766° E",
+      flight: "4h 15m from London / Frankfurt",
+      temp: "29°C Lagoon Temperature",
+      stat: "+18% Annual Appreciation",
+      narrative:
+        "An internationally master-planned archipelago where avant-garde villas open directly onto private marine channels. Home to global festival lifestyle and golf sanctuaries.",
+    },
+    {
+      id: "sahl-hasheesh",
+      num: "02",
+      name: "Sahl Hasheesh",
+      sub: "12-Kilometer Protected Beachfront",
+      image: "/img-sahl-hasheesh.jpg",
+      coordinates: "27.0506° N, 33.8828° E",
+      flight: "15m from Hurghada Airport",
+      temp: "28°C Calm Bay Waters",
+      stat: "100% Freehold Land Tenure",
+      narrative:
+        "A private gated bay surrounded by the Red Sea mountains. Classical Mediterranean boulevards, sunken coral gardens, and ultra-luxury beachfront compounds.",
+    },
+    {
+      id: "hurghada",
+      num: "03",
+      name: "Hurghada",
+      sub: "Urban Waterfront & Capital Gateway",
+      image: "/img-hurghada.jpg",
+      coordinates: "27.2579° N, 33.8116° E",
+      flight: "Direct European Aviation Hub",
+      temp: "Year-Round Coastal Sun",
+      stat: "High Tourism Footfall",
+      narrative:
+        "The cosmopolitan center of Egypt's Red Sea Riviera. Offers prime commercial retail, waterfront penthouses along the Marina Promenade, and institutional offices.",
+    },
+    {
+      id: "soma-bay",
+      num: "04",
+      name: "Soma Bay",
+      sub: "Exclusive 10M m² Peninsula",
+      image: "/img-soma-bay.jpg",
+      coordinates: "26.8488° N, 33.9892° E",
+      flight: "35m Coastal Highway",
+      temp: "Pure Coastal Waters",
+      stat: "Low-Density Zoning",
+      narrative:
+        "A secluded natural peninsula embraced on three sides by crystalline sea. Championship golf, spa sanctuaries, and exceptionally rare first-row sea-view plots.",
+    },
+    {
+      id: "makadi-bay",
+      num: "05",
+      name: "Makadi Bay",
+      sub: "Gentle Waters & Coral Lagoons",
+      image: "/img-makadi-bay.jpg",
+      coordinates: "26.9892° N, 33.8986° E",
+      flight: "25m from Airport",
+      temp: "Sheltered Marine Life",
+      stat: "Turnkey Lifestyle Yield",
+      narrative:
+        "Serene coastal living protected by living coral reefs. Ideal for multi-generational vacation residences, boutique hospitality plots, and quiet estates.",
+    },
+  ];
+
+  // 5 Curated Property Typologies for the Split-Screen Scroll
+  const offerings = [
+    {
+      num: "I",
+      title: "Signature Beachfront & Lagoon Villas",
+      tag: "READY-TO-MOVE & OFF-PLAN SANCTUARIES",
+      desc: "Stand-alone villas and twin houses in private gated communities across El Gouna lagoons and Sahl Hasheesh beachfronts with private infinity pools and dedicated marine moorings.",
+      meta: "Private Moorings · 100% Freehold · 3 to 6 Bedrooms",
+      img: "/img-luxury-villa.jpg",
+    },
+    {
+      num: "II",
+      title: "Sea-View Penthouses & Duplexes",
+      tag: "HIGH-TURNOVER WATERFRONT YIELD",
+      desc: "Curated 1- to 4-bedroom residences boasting panoramic Red Sea horizons, rooftop solariums, and managed holiday rental programs yielding 12–16% net in EUR/USD.",
+      meta: "Full Sea & Lagoon Views · Turnkey Furnished · Managed Rental Pools",
+      img: "/img-hero-ocean.jpg",
+    },
+    {
+      num: "III",
+      title: "Primary Developer Off-Plan Enclaves",
+      tag: "5–7 YEAR PAYMENT PLANS @ 0% INTEREST",
+      desc: "Direct access to master-developer releases in El Gouna, Somabay, and ERC Sahl Hasheesh with 10–15% down payments and flexible 5- to 7-year quarterly installments.",
+      meta: "0% Interest · Direct Developer Pricing · Capital Growth Buffer",
+      img: "/img-penthouse-interior.jpg",
+    },
+    {
+      num: "IV",
+      title: "Prime Freehold Land Reserves",
+      tag: "STRATEGIC CAPITAL & PRIVATE BUILD",
+      desc: "Freehold and fully zoned plots in prime expansion corridors of Somabay, Sahl Hasheesh, and Hurghada Waterfront with verified municipal utility connections and approved build envelopes.",
+      meta: "Verified Freehold · Zoned Residential/Boutique Hospitality · Sovereign Title",
+      img: "/img-private-island.jpg",
+    },
+    {
+      num: "V",
+      title: "Commercial Promenade & Marina Retail",
+      tag: "HIGH FOOTFALL TOURISM CORRIDORS",
+      desc: "Prime retail showrooms, beach club footprints, and restaurant concessions along bustling marina promenades with blue-chip international and domestic tenant covenants.",
+      meta: "Marina Promenade Locations · High Tourist Traffic · Commercial Leases",
+      img: "/img-hurghada.jpg",
+    },
+  ];
+
+  return (
+    <div className="min-h-screen flex flex-col font-sans relative bg-grain transition-colors duration-500">
+      {/* Ambient Breathing Glow Orbs */}
+      <div className="fixed top-1/4 -left-48 w-96 h-96 rounded-full bg-[#C0673F]/15 blur-[120px] pointer-events-none animate-ambient-glow" />
+      <div className="fixed bottom-1/3 -right-48 w-[32rem] h-[32rem] rounded-full bg-[#DCC7B1]/10 blur-[150px] pointer-events-none animate-ambient-glow" />
+
+      {/* ─── ULTRA-MINIMALIST FLOATING BAR (LENVAL + QUINTA DA MALIA STYLE) ─── */}
+      <header className="fixed top-6 left-0 right-0 z-50 px-6 sm:px-12 pointer-events-none">
+        <div className="max-w-7xl mx-auto flex items-center justify-between pointer-events-auto">
+          {/* Logo */}
+          <a href="#hero" className="flex items-center gap-3 group">
+            <div className="relative h-11 w-40 sm:w-48 transition-transform group-hover:scale-105">
+              <Image
+                src={theme === "dark" ? "/logo-light.png" : "/logo-dark.png"}
+                alt="Datcha Real Estate Logo"
+                fill
+                className="object-contain object-left"
+                priority
+              />
+            </div>
+          </a>
+
+          {/* Minimal Controls Capsule */}
+          <div className="flex items-center gap-3 bg-black/40 backdrop-blur-2xl p-1.5 rounded-full border border-white/15 shadow-2xl">
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="w-9 h-9 rounded-full flex items-center justify-center text-[#DCC7B1] hover:text-white hover:bg-white/10 transition-all"
+              title="Toggle Light / Dark Mode"
+            >
+              {theme === "dark" ? <Sun className="w-4 h-4 text-[#C0673F]" /> : <Moon className="w-4 h-4 text-[#C0673F]" />}
+            </button>
+
+            {/* Quick Consultation CTA */}
+            <a
+              href="#dossier"
+              className="hidden sm:inline-flex px-5 py-2 rounded-full bg-[#C0673F] hover:bg-[#A8552F] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-lg shadow-[#C0673F]/30"
+            >
+              Private Portfolio
+            </a>
+
+            {/* Fullscreen Hidden Drawer Menu Trigger (Lenval Style) */}
+            <button
+              onClick={() => setFullscreenMenuOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-[#F7F3ED] text-xs font-bold uppercase tracking-widest transition-all"
+            >
+              <Menu className="w-4 h-4" />
+              <span>Menu</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          FULLSCREEN CURATED DRAWER MENU (LENVAL PROPERTIES STYLE)
+      ═══════════════════════════════════════════════════════════════ */}
+      <AnimatePresence>
+        {fullscreenMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -40 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 z-[200] bg-[#0c1214]/98 backdrop-blur-3xl flex flex-col justify-between p-8 sm:p-20 text-[#F7F3ED]"
+          >
+            {/* Top Bar of Drawer */}
+            <div className="flex items-center justify-between border-b border-white/10 pb-8">
+              <div className="relative h-10 w-40">
+                <Image src="/logo-light.png" alt="Datcha Logo" fill className="object-contain object-left" />
+              </div>
+              <button
+                onClick={() => setFullscreenMenuOpen(false)}
+                className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#C0673F] transition-all"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Massive Typographic Navigation Links */}
+            <div className="my-auto max-w-4xl space-y-6 sm:space-y-8">
+              {[
+                { name: "01 / The Arrival (Riviera Overview)", href: "#hero" },
+                { name: "02 / The Coastal Corridors (El Gouna · Sahl Hasheesh · Soma Bay)", href: "#destinations" },
+                { name: "03 / Property Typologies (Villas · Penthouses · Developer Off-Plan)", href: "#portfolio" },
+                { name: "04 / Legal Framework & Foreign Ownership (Law 230/1996)", href: "#philosophy" },
+                { name: "05 / Request Private Acquisition Portfolio & VIP Tour", href: "#dossier" },
+              ].map((link, idx) => (
+                <div key={idx} className="group">
+                  <a
+                    href={link.href}
+                    onClick={() => setFullscreenMenuOpen(false)}
+                    className="text-2xl sm:text-5xl font-serif font-light tracking-tight hover:text-[#C0673F] transition-colors flex items-center justify-between"
+                  >
+                    <span>{link.name}</span>
+                    <ArrowRight className="w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity text-[#C0673F]" />
+                  </a>
+                </div>
+              ))}
+            </div>
+
+            {/* Bottom Footer Info */}
+            <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-[#8A8F93] font-mono gap-4">
+              <span>HURGHADA · EL GOUNA · SAHL HASHEESH · SOMA BAY · MAKADI BAY</span>
+              <span>DATCHAREALESTATE.COM · ALL RIGHTS RESERVED 2026</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          SECTION 1: FULLSCREEN MONUMENTAL HERO
+      ═══════════════════════════════════════════════════════════════ */}
+      <section id="hero" className="relative min-h-[92vh] sm:min-h-screen flex flex-col justify-between overflow-hidden">
+        {/* High-Res Fallback Architecture & Ocean Photography */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/img-hero-ocean.jpg"
+            alt="Red Sea Coastal Architecture"
+            fill
+            priority
+            className="object-cover scale-105 filter brightness-[0.55] contrast-[1.1]"
+          />
+          {/* Full-bleed Aerial Ocean Drone Video */}
+          <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-screen">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-shot-of-blue-ocean-waves-1260-large.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-[#0c1214] pointer-events-none" />
+        </div>
+
+        {/* Hero Typography & Curated Overture */}
+        <div className="relative z-10 max-w-5xl mx-auto px-6 pt-32 pb-16 text-center my-auto">
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            className="inline-flex items-center gap-2.5 text-[11px] sm:text-xs font-mono uppercase tracking-[0.25em] text-[#C0673F] mb-6 px-5 py-2 rounded-full bg-black/70 border border-[#C0673F]/40 backdrop-blur-xl"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Red Sea Coastal Architectural Curation</span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ y: 35, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light text-[#F7F3ED] tracking-tight leading-[1.02] mb-6 font-serif"
+          >
+            More Than Properties. <br />
+            <span className="italic font-light text-[#DCC7B1] block mt-1">
+              A Lifestyle by the Red Sea.
+            </span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ y: 25, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.9 }}
+            className="max-w-2xl mx-auto text-base sm:text-xl text-[#DCC7B1]/90 font-light mb-10 tracking-wide leading-relaxed"
+          >
+            Homes. Investments. A Brighter Tomorrow. Curating verified land tenure, waterfront residences, and prime commercial acquisitions across Egypt&apos;s most coveted coastal sanctuaries.
+          </motion.p>
+
+          <motion.div
+            initial={{ y: 25, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.9 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          >
+            <a
+              href="#destinations"
+              className="w-full sm:w-auto px-8 py-4 bg-[#C0673F] hover:bg-[#A8552F] text-white text-xs font-bold uppercase tracking-widest rounded-full shadow-2xl shadow-[#C0673F]/40 transition-all hover:scale-105 flex items-center justify-center gap-3"
+            >
+              <span>Explore The Corridors</span>
+              <ArrowRight className="w-4 h-4" />
+            </a>
+            <a
+              href="#dossier"
+              className="w-full sm:w-auto px-8 py-4 border border-white/20 hover:border-[#C0673F] text-[#F7F3ED] text-xs font-bold uppercase tracking-widest rounded-full backdrop-blur-md hover:bg-white/5 transition-all"
+            >
+              Request Acquisition Portfolio
+            </a>
+          </motion.div>
+        </div>
+
+        {/* Ambient Scroll Cue (Elevated Safely Above Bottom Horizon) */}
+        <div className="relative z-10 flex flex-col items-center gap-2 text-[#8A8F93] text-[10px] tracking-[0.25em] uppercase font-mono pb-6 pointer-events-none">
+          <span>Scroll to Explore</span>
+          <div className="w-[1.5px] h-6 bg-gradient-to-b from-[#C0673F] to-transparent rounded-full animate-pulse" />
+        </div>
+
+        {/* ─── CONTINUOUS RUNNING MARQUEE TICKER (INTEGRATED SEAMLESSLY AT HERO BASE) ─── */}
+        <div className="relative z-10 border-t border-white/10 bg-[#0c1214]/90 backdrop-blur-md py-3.5 overflow-hidden">
+          <div className="animate-marquee flex items-center gap-12 text-[11px] font-mono uppercase tracking-[0.25em] text-[#DCC7B1]/90">
+            <span>✦ EL GOUNA WATERFRONT</span>
+            <span>✦ SAHL HASHEESH 12KM BAY</span>
+            <span>✦ SOMA BAY REEF PENINSULA</span>
+            <span>✦ HURGHADA URBAN MARINA</span>
+            <span>✦ MAKADI CORAL LAGOONS</span>
+            <span>✦ 100% FOREIGN FREEHOLD (LAW 230/1996)</span>
+            <span>✦ DEVELOPER PAYMENT PLANS UP TO 7 YRS @ 0%</span>
+            <span>✦ MULTILINGUAL ADVISORY: EN · AR · RU · DE</span>
+            <span>✦ EL GOUNA WATERFRONT</span>
+            <span>✦ SAHL HASHEESH 12KM BAY</span>
+            <span>✦ SOMA BAY REEF PENINSULA</span>
+            <span>✦ HURGHADA URBAN MARINA</span>
+            <span>✦ MAKADI CORAL LAGOONS</span>
+            <span>✦ 100% FOREIGN FREEHOLD (LAW 230/1996)</span>
+            <span>✦ DEVELOPER PAYMENT PLANS UP TO 7 YRS @ 0%</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── QUINTA DA MALIA ARCHITECTURAL CURVED ARCH TRANSITION ─── */}
+      <div className="relative w-full h-14 sm:h-20 pointer-events-none -mt-0.5 overflow-hidden" style={{ backgroundColor: "#0c1214" }}>
+        <svg viewBox="0 0 100 20" preserveAspectRatio="none" className="w-full h-full block">
+          <path d="M0,0 Q50,22 100,0 L100,20 L0,20 Z" style={{ fill: "var(--t-bg)" }} />
+        </svg>
+      </div>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          SECTION 2: ULTRA-MINIMALIST EDITORIAL STATEMENTS (LENVAL STYLE)
+      ═══════════════════════════════════════════════════════════════ */}
+      <section className="py-28 px-6 sm:px-12 max-w-6xl mx-auto">
+        <div className="text-xs font-mono text-[#C0673F] uppercase tracking-[0.25em] mb-8 flex items-center gap-3">
+          <span className="w-6 h-[1px] bg-[#C0673F]" />
+          <span>Curatorial Manifesto</span>
+        </div>
+
+        <h2 className="text-3xl sm:text-6xl md:text-7xl font-light font-serif tracking-tight leading-[1.08] mb-12" style={{ color: "var(--t-text)" }}>
+          We do not subscribe to high-volume brokerage. We curate <span className="italic text-[#C0673F]">enduring landmarks</span> shaped by architectural integrity and pristine Red Sea waters.
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 pt-12 border-t border-white/10 text-sm leading-relaxed" style={{ color: "var(--t-text-muted)" }}>
+          <div>
+            <span className="text-2xl font-serif text-[#C0673F] block mb-3">01 / The Land</span>
+            <p className="font-light">Identifying exceptional beachfront parcels and elevated plateau plots with guaranteed zoning rights, clear sovereign titles, and enduring capital relevance.</p>
+          </div>
+          <div>
+            <span className="text-2xl font-serif text-[#C0673F] block mb-3">02 / The Narrative</span>
+            <p className="font-light">Every residence we represent is audited for architectural coherence, unobstructed sea views, and private resort amenities that ensure superior rental and resale liquidity.</p>
+          </div>
+          <div>
+            <span className="text-2xl font-serif text-[#C0673F] block mb-3">03 / The Protection</span>
+            <p className="font-light">Our bilingual in-house legal counsel manages title registration, municipal filings, and escrow terms to provide total contractual certainty for international investors.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          SECTION 3: HORIZONTAL PINNED SLIDER (QUINTA DA MALIA SIGNATURE)
+      ═══════════════════════════════════════════════════════════════ */}
+      <section id="destinations" className="py-24 border-t" style={{ backgroundColor: "var(--t-bg-alt)", borderColor: "var(--t-border)" }}>
+        <div className="px-6 sm:px-12 max-w-7xl mx-auto mb-10 flex items-end justify-between">
+          <div>
+            <span className="text-xs font-mono uppercase tracking-[0.25em] text-[#C0673F] block mb-2">Regional Corridors</span>
+            <h2 className="text-3xl sm:text-6xl font-light font-serif" style={{ color: "var(--t-text)" }}>
+              The Coastal <em>Collection.</em>
+            </h2>
+          </div>
+
+          {/* Slider Arrow Controls */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => scrollHorizontal("left")}
+              className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#C0673F] transition-all"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => scrollHorizontal("right")}
+              className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#C0673F] transition-all"
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Horizontal Scroll Track */}
+        <div
+          ref={horizontalScrollRef}
+          className="flex gap-8 overflow-x-auto px-6 sm:px-12 pb-12 pt-4 no-scrollbar scroll-smooth"
+        >
+          {destinations.map((dest, idx) => (
+            <div
+              key={dest.id}
+              className="flex-shrink-0 w-[340px] sm:w-[480px] rounded-[2.5rem] overflow-hidden border border-white/10 group bg-black/40 flex flex-col justify-between shadow-2xl"
+            >
+              {/* Image Frame */}
+              <div className="relative h-[340px] sm:h-[400px] overflow-hidden">
+                <Image src={dest.image} alt={dest.name} fill className="object-cover img-zoom" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/20" />
+                
+                {/* Coordinates Tag */}
+                <div className="absolute top-6 left-6 px-3.5 py-1.5 rounded-full bg-black/60 border border-white/10 text-[10px] font-mono text-[#DCC7B1] backdrop-blur-md">
+                  {dest.coordinates}
+                </div>
+
+                {/* Number Badge */}
+                <div className="absolute top-6 right-6 text-2xl font-serif text-[#C0673F]">
+                  {dest.num}
+                </div>
+
+                <div className="absolute bottom-6 left-6 right-6 text-white">
+                  <h3 className="text-3xl font-serif font-light mb-1">{dest.name}</h3>
+                  <p className="text-xs text-[#DCC7B1] font-light">{dest.sub}</p>
+                </div>
+              </div>
+
+              {/* Data Strip */}
+              <div className="p-8 flex flex-col justify-between flex-grow">
+                <p className="text-xs text-[#8A8F93] leading-relaxed mb-6 font-light">{dest.narrative}</p>
+                
+                <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono">
+                  <span className="text-[#C0673F] font-bold">{dest.stat}</span>
+                  <a href="#dossier" className="inline-flex items-center gap-1.5 text-white hover:text-[#C0673F] transition-colors font-sans uppercase font-bold text-[11px]">
+                    <span>Inquire</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── QUINTA DA MALIA ORGANIC SVG CURVE (INVERSE ARCH) ─── */}
+      <div className="relative w-full h-14 sm:h-20 pointer-events-none -mt-1 overflow-hidden" style={{ backgroundColor: "var(--t-bg-alt)" }}>
+        <svg viewBox="0 0 100 20" preserveAspectRatio="none" className="w-full h-full block">
+          <path d="M0,20 Q50,0 100,20 L100,20 L0,20 Z" style={{ fill: "var(--t-bg)" }} />
+        </svg>
+      </div>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          SECTION 4: SPLIT-SCREEN STICKY STORYTELLING (LENVAL / MR. C STYLE)
+      ═══════════════════════════════════════════════════════════════ */}
+      <section id="portfolio" className="py-28 px-6 sm:px-12 max-w-7xl mx-auto">
+        <div className="text-center max-w-3xl mx-auto mb-20">
+          <span className="text-xs font-mono uppercase tracking-[0.25em] text-[#C0673F] block mb-3">Portfolio Curation</span>
+          <h2 className="text-3xl sm:text-6xl font-light font-serif mb-4" style={{ color: "var(--t-text)" }}>
+            Five Core Property <em>Typologies.</em>
+          </h2>
+          <p className="text-sm font-light text-[#8A8F93] leading-relaxed">
+            Strictly vetted against legal encumbrances, construction licenses, and capital exit horizons. We represent audited assets, never unverified feeds.
+          </p>
+        </div>
+
+        {/* Split Screen Container */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          {/* Left Column: Interactive Asset Classes Accordion / List */}
+          <div className="lg:col-span-6 space-y-6">
+            {offerings.map((item, idx) => {
+              const isActive = activeStorySlide === idx;
+              return (
+                <div
+                  key={idx}
+                  onClick={() => setActiveStorySlide(idx)}
+                  onMouseEnter={() => setActiveStorySlide(idx)}
+                  className={`p-8 rounded-[2rem] border transition-all duration-300 cursor-pointer ${
+                    isActive
+                      ? "border-[#C0673F] bg-white/[0.08] shadow-2xl scale-[1.015] ring-1 ring-[#C0673F]/40"
+                      : "border-white/10 hover:border-white/30 bg-black/20 hover:bg-black/30"
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-mono text-[#C0673F] font-bold flex items-center gap-2">
+                      {isActive && <span className="w-2 h-2 rounded-full bg-[#C0673F] animate-ping" />}
+                      {item.tag}
+                    </span>
+                    <span className="text-lg font-serif font-light text-[#8A8F93]">TYPOLOGY {item.num}</span>
+                  </div>
+                  <h3 className="text-2xl font-serif font-light mb-3" style={{ color: "var(--t-text)" }}>
+                    {item.title}
+                  </h3>
+                  <p className="text-xs leading-relaxed text-[#8A8F93] font-light mb-4">{item.desc}</p>
+                  <div className="text-[11px] font-mono text-[#DCC7B1] pt-3 border-t border-white/5 flex items-center justify-between">
+                    <span>{item.meta}</span>
+                    <span className="text-xs text-[#C0673F] opacity-0 group-hover:opacity-100 transition-opacity">
+                      Glide to View →
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Right Column: Sticky Morphing Photography Plate */}
+          <div className="lg:col-span-6 sticky top-28 h-[550px] sm:h-[680px] rounded-[3rem] overflow-hidden border border-white/15 shadow-2xl">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeStorySlide}
+                initial={{ opacity: 0, scale: 1.05 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.05 }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                className="relative w-full h-full"
+              >
+                <Image
+                  src={offerings[activeStorySlide].img}
+                  alt={offerings[activeStorySlide].title}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/30" />
+                <div className="absolute top-8 right-8 px-4 py-2 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-xs font-mono text-[#DCC7B1]">
+                  AUDITED TYPOLOGY {offerings[activeStorySlide].num}
+                </div>
+                <div className="absolute bottom-10 left-10 right-10 text-white">
+                  <span className="text-xs font-mono uppercase tracking-widest text-[#C0673F] block mb-1">
+                    {offerings[activeStorySlide].tag}
+                  </span>
+                  <h4 className="text-3xl font-serif font-light mb-2">{offerings[activeStorySlide].title}</h4>
+                  <a
+                    href="#dossier"
+                    className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#DCC7B1] hover:text-[#C0673F] transition-colors mt-2"
+                  >
+                    <span>Request Acquisition Portfolio</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          SECTION 5: INSTITUTIONAL TRUST & EGYPTIAN LEGAL GOVERNANCE
+      ═══════════════════════════════════════════════════════════════ */}
+      <section id="philosophy" className="py-24 px-6 sm:px-12 border-t" style={{ backgroundColor: "var(--t-bg-alt)", borderColor: "var(--t-border)" }}>
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center mb-24">
+            <div className="lg:col-span-5">
+              <span className="text-xs font-mono uppercase tracking-[0.25em] text-[#C0673F] block mb-3">Institutional Governance</span>
+              <h2 className="text-3xl sm:text-6xl font-light font-serif mb-6 leading-tight" style={{ color: "var(--t-text)" }}>
+                Legal Certainty. <br />
+                <span className="italic text-[#C0673F]">Enduring Capital.</span>
+              </h2>
+              <p className="text-sm text-[#8A8F93] leading-relaxed font-light mb-8">
+                Purchasing luxury coastal property in Egypt requires absolute title clarity, statutory foreign ownership compliance, and trusted local escrow. We represent clients from contract vetting to final deed registration.
+              </p>
+              <div className="p-6 rounded-2xl bg-white/5 border border-white/10 text-xs font-light text-[#DCC7B1] leading-relaxed">
+                Client advisory conducted natively in <strong>English, Arabic, Russian, and German</strong>. No misinterpretations, complete contractual transparency.
+              </div>
+            </div>
+
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {[
+                { roman: "I", title: "15+ Years Regional Focus", desc: "Unmatched daily focus on El Gouna, Sahl Hasheesh, and Soma Bay. Direct access to developer allocations before public release." },
+                { roman: "II", title: "Law 230/1996 Freehold", desc: "Statutory foreign ownership compliance guaranteeing full, unencumbered freehold title deeds without local sponsor requirements." },
+                { roman: "III", title: "Shahr El Akari Notarization", desc: "Comprehensive registration at the Egyptian Notary Public, court validity proceedings (Sehat W Nafaz), and escrow oversight." },
+                { roman: "IV", title: "Currency & Repatriation Security", desc: "Transparent purchase options in EUR, USD, GBP, or EGP installments with 100% unrestricted future capital repatriation." },
+              ].map((item, idx) => (
+                <div key={idx} className="p-8 rounded-[2rem] border border-white/10 bg-black/30 hover:border-[#C0673F]/60 transition-all">
+                  <span className="text-xs font-mono text-[#C0673F] font-bold block mb-3">PILLAR {item.roman}</span>
+                  <h3 className="text-xl font-serif font-light text-white mb-2">{item.title}</h3>
+                  <p className="text-xs text-[#8A8F93] font-light leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Testimonial Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                quote: "Working with Datcha was seamless. As an investor from Moscow, purchasing a sea-view apartment in El Gouna felt effortless. Their Russian-speaking legal advisor reviewed every clause.",
+                client: "Mikhail & Elena V.",
+                loc: "Moscow, Russia",
+                deal: "Lagoon Penthouse, El Gouna",
+              },
+              {
+                quote: "Finding our retirement home in Sahl Hasheesh could have been daunting, but Datcha's clarity and patience stood out. They treated us like family and ensured clean title deeds.",
+                client: "David Harrington",
+                loc: "London, UK",
+                deal: "Beachfront Villa, Sahl Hasheesh",
+              },
+              {
+                quote: "تجربتنا مع فريق داتشا كانت نموذجية في الأمانة والاحتراف. استثمرنا في أرض تجارية بالغردقة وكانت كل الإجراءات القانونية موثقة بدقة تامة.",
+                client: "م. طارق عبد العزيز",
+                loc: "Cairo, Egypt",
+                deal: "Commercial Plot, Hurghada",
+              },
+            ].map((testi, idx) => (
+              <div key={idx} className="p-8 rounded-[2rem] border border-white/10 bg-black/20 flex flex-col justify-between">
+                <div>
+                  <div className="text-4xl font-serif text-[#C0673F] mb-4">“</div>
+                  <p className="text-sm italic font-light leading-relaxed mb-6" style={{ color: "var(--t-text)" }}>{testi.quote}</p>
+                </div>
+                <div className="pt-4 border-t border-white/10">
+                  <div className="text-sm font-serif font-bold text-white">{testi.client}</div>
+                  <div className="text-xs text-[#C0673F]">{testi.deal}</div>
+                  <div className="text-[10px] font-mono text-[#8A8F93]">{testi.loc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          SECTION 6: PRIVATE CLIENT ADVISORY & VIP DISCOVERY TOUR
+      ═══════════════════════════════════════════════════════════════ */}
+      <section id="dossier" className="py-28 px-6 sm:px-12 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          <div className="lg:col-span-5">
+            <span className="text-xs font-mono uppercase tracking-[0.25em] text-[#C0673F] block mb-3">Private Client Advisory Desk</span>
+            <h2 className="text-3xl sm:text-6xl font-light font-serif mb-6 leading-tight" style={{ color: "var(--t-text)" }}>
+              Request Your <em>Portfolio.</em>
+            </h2>
+            <p className="text-sm font-light text-[#8A8F93] leading-relaxed mb-8">
+              Whether you seek a beachfront estate, an off-plan development with 5–7 year installments, or prime land reserves, our senior partners assemble a curated, legally audited portfolio tailored to your goals.
+            </p>
+
+            {/* VIP Discovery Tour High-Intent Card */}
+            <div className="p-6 rounded-3xl bg-gradient-to-br from-[#C0673F]/20 via-black/40 to-black/60 border border-[#C0673F]/40 mb-8 shadow-xl">
+              <div className="flex items-center gap-2 text-[#D4AF37] font-mono text-[10px] tracking-widest uppercase font-bold mb-2">
+                <Sparkles className="w-3.5 h-3.5" />
+                VIP CLIENT CONCIERGE SERVICE
+              </div>
+              <h4 className="font-serif text-lg text-white mb-2">Hosted 3-Day Red Sea Discovery Tour</h4>
+              <p className="text-xs text-[#DCC7B1] leading-relaxed font-light mb-4">
+                Complimentary private airport transfer, curated property inspections across El Gouna, Sahl Hasheesh, and Soma Bay, and in-person consultation with senior legal counsel.
+              </p>
+              <a
+                href="https://wa.me/201234567990?text=Hello%20Datcha,%20I%20would%20like%20to%20inquire%20about%20booking%20a%20VIP%20Discovery%20Tour."
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 text-xs font-mono text-[#D4AF37] hover:underline uppercase tracking-wider font-semibold"
+              >
+                Inquire About Discovery Tour Dates →
+              </a>
+            </div>
+
+            <div className="space-y-4 text-xs font-mono text-[#DCC7B1] mb-10">
+              <div className="flex items-center gap-3">
+                <Phone className="w-4 h-4 text-[#C0673F]" />
+                <span>+20 123 456 7990 (Direct & WhatsApp)</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Mail className="w-4 h-4 text-[#C0673F]" />
+                <span>concierge@datcharealestate.com</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <MapPin className="w-4 h-4 text-[#C0673F]" />
+                <span>Hurghada Marina Promenade, Red Sea Governorate</span>
+              </div>
+            </div>
+
+            <a
+              href="https://wa.me/201234567990?text=Hello%20Datcha%20Real%20Estate,%20I%20am%20inquiring%20about%20Red%20Sea%20properties."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-[#25D366] hover:bg-[#20BA59] text-white text-xs font-bold uppercase tracking-wider rounded-full shadow-lg shadow-[#25D366]/30 transition-all hover:scale-105"
+            >
+              <MessageCircle className="w-4 h-4" />
+              <span>Direct WhatsApp Concierge</span>
+            </a>
+          </div>
+
+          <div className="lg:col-span-7">
+            <div className="p-8 sm:p-14 rounded-[3rem] border border-white/10 bg-black/40 shadow-2xl">
+              {formSubmitted ? (
+                <div className="py-16 text-center">
+                  <div className="w-16 h-16 rounded-full bg-[#C0673F]/20 border border-[#C0673F] flex items-center justify-center text-[#C0673F] mx-auto mb-6">
+                    <CheckCircle2 className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-3xl font-light font-serif mb-3 text-white">Portfolio Request Received</h3>
+                  <p className="text-sm max-w-md mx-auto font-light leading-relaxed text-[#8A8F93]">
+                    Your criteria have been assigned to our managing partner. An encrypted acquisition portfolio will be delivered to your registered contact within 24 hours.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleFormSubmit} className="space-y-6">
+                  {/* Asset Selection Chips */}
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider mb-3 text-white">
+                      1. Target Property Typology
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {["Beachfront & Lagoon Villas", "Sea-View Penthouses", "Primary Off-Plan (5-7 Yr Installments)", "Freehold Land Reserves", "Commercial Promenade"].map((asset) => (
+                        <button
+                          type="button"
+                          key={asset}
+                          onClick={() => setSelectedAsset(asset)}
+                          className={`px-4 py-2 rounded-full text-xs transition-all font-medium border ${
+                            selectedAsset === asset
+                              ? "bg-[#C0673F] text-white border-[#C0673F] shadow-sm"
+                              : "border-white/10 text-[#8A8F93] hover:text-[#F7F3ED]"
+                          }`}
+                        >
+                          {asset}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Horizon Selection Chips */}
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider mb-3 text-white">
+                      2. Investment Intent & Horizon
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {["Private Family Residence", "Capital Growth (3-5 Years)", "Immediate Rental Yield", "Commercial Enterprise"].map((hor) => (
+                        <button
+                          type="button"
+                          key={hor}
+                          onClick={() => setSelectedHorizon(hor)}
+                          className={`px-4 py-2 rounded-full text-xs transition-all font-medium border ${
+                            selectedHorizon === hor
+                              ? "bg-[#C0673F] text-white border-[#C0673F] shadow-sm"
+                              : "border-white/10 text-[#8A8F93] hover:text-[#F7F3ED]"
+                          }`}
+                        >
+                          {hor}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Credentials */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-white/10">
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider mb-2 text-white">Full Name *</label>
+                      <input
+                        required
+                        type="text"
+                        placeholder="Your full name"
+                        className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none bg-black/60 border border-white/10 text-white focus:border-[#C0673F] transition-all"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider mb-2 text-white">Email Address *</label>
+                      <input
+                        required
+                        type="email"
+                        placeholder="client@investments.com"
+                        className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none bg-black/60 border border-white/10 text-white focus:border-[#C0673F] transition-all"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider mb-2 text-white">Phone / WhatsApp *</label>
+                      <input
+                        required
+                        type="tel"
+                        placeholder="+20 / +44 / +7 / +49..."
+                        className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none bg-black/60 border border-white/10 text-white focus:border-[#C0673F] transition-all"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider mb-2 text-white">Advisory Language</label>
+                      <select className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none bg-black/60 border border-white/10 text-white focus:border-[#C0673F] transition-all">
+                        <option>English</option>
+                        <option>العربية (Arabic)</option>
+                        <option>Русский (Russian)</option>
+                        <option>Deutsch (German)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider mb-2 text-white">Specific Criteria & Budget</label>
+                    <textarea
+                      rows={3}
+                      placeholder="Please specify target budget, preferred square meters, or specific waterfront criteria..."
+                      className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none bg-black/60 border border-white/10 text-white focus:border-[#C0673F] transition-all resize-none"
+                    ></textarea>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full py-4 bg-[#C0673F] hover:bg-[#A8552F] text-white text-xs font-bold uppercase tracking-widest rounded-full transition-all shadow-xl shadow-[#C0673F]/35 hover:scale-[1.01]"
+                  >
+                    Commission Confidential Dossier →
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── SITE FOOTER ─── */}
+      <footer className="py-16 px-6 sm:px-12 border-t mt-auto" style={{ backgroundColor: "var(--t-footer-bg)", borderColor: "var(--t-border)" }}>
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="relative h-12 w-48">
+            <Image src="/logo-light.png" alt="Datcha Real Estate" fill className="object-contain object-left" />
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-8 text-xs uppercase tracking-[0.2em] text-[#8A8F93]">
+            <a href="#hero" className="hover:text-[#C0673F] transition-colors">Arrival</a>
+            <a href="#destinations" className="hover:text-[#C0673F] transition-colors">Corridors</a>
+            <a href="#portfolio" className="hover:text-[#C0673F] transition-colors">Portfolio</a>
+            <a href="#philosophy" className="hover:text-[#C0673F] transition-colors">Philosophy</a>
+            <a href="#dossier" className="hover:text-[#C0673F] transition-colors">Dossier</a>
+          </div>
+
+          <div className="text-center md:text-right text-xs text-[#8A8F93] font-mono">
+            <p>© 2026 Datcha Real Estate. All rights reserved.</p>
+            <p className="mt-1 text-[11px] text-[#8A8F93]/70">datcharealestate.com · Red Sea Governorate, Egypt</p>
+          </div>
+        </div>
+      </footer>
+
+      {/* ─── FLOATING WHATSAPP ─── */}
+      <a
+        href="https://wa.me/201234567990?text=Hello%20Datcha%20Real%20Estate"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25D366] hover:bg-[#20BA59] text-white rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110"
+        title="Direct WhatsApp Concierge"
+        aria-label="WhatsApp Contact"
+      >
+        <MessageCircle className="w-7 h-7" />
+      </a>
+    </div>
+  );
+}

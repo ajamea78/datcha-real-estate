@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Omni v8.1 — Temporary Archetype Sandbox</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --color-bg: #0b0f17;
+      --color-surface: #151c28;
+      --color-text: #f1f5f9;
+      --color-text-muted: #94a3b8;
+      --color-accent: #10b981;
+      --color-border: #263246;
+      --font-display: 'Inter', system-ui, sans-serif;
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --radius-ui: 6px;
+    }
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-sans);
+      transition: background-color 0.2s ease, color 0.2s ease;
+      margin: 0;
+    }
+    .omni-surface {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-ui);
+    }
+    #viewport-frame {
+      margin: 0 auto;
+      transition: max-width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <header class="sticky top-0 z-50 bg-neutral-950/95 backdrop-blur border-b border-amber-500/40 px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs text-neutral-200 font-mono">
+    <div class="flex items-center gap-2">
+      <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 font-bold">SANDBOX PREVIEW ONLY (PORT 4173)</span>
+      <span id="active-archetype-label" class="text-neutral-400">Option A: High-Density Canvas</span>
+    </div>
+    <div class="flex items-center gap-1 bg-neutral-900 p-1 rounded border border-neutral-800">
+      <button onclick="setArchetype('A')" id="btn-A" class="px-3 py-1 rounded bg-emerald-500 text-neutral-950 font-bold">[1] Option A</button>
+      <button onclick="setArchetype('B')" id="btn-B" class="px-3 py-1 rounded hover:bg-neutral-800 text-neutral-300">[2] Option B</button>
+      <button onclick="setArchetype('C')" id="btn-C" class="px-3 py-1 rounded hover:bg-neutral-800 text-neutral-300">[3] Option C</button>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="flex items-center bg-neutral-900 p-1 rounded border border-neutral-800">
+        <button onclick="setViewport('100%')" class="px-2 py-0.5 hover:bg-neutral-800 rounded">Desktop</button>
+        <button onclick="setViewport('768px')" class="px-2 py-0.5 hover:bg-neutral-800 rounded">Tablet</button>
+        <button onclick="setViewport('390px')" class="px-2 py-0.5 hover:bg-neutral-800 rounded">Mobile</button>
+      </div>
+      <button onclick="toggleHUD()" class="px-2.5 py-1 rounded border border-neutral-700 hover:bg-neutral-800 text-emerald-400">Tokens HUD</button>
+    </div>
+  </header>
+
+  <aside id="token-hud" class="hidden fixed bottom-4 right-4 z-50 w-80 bg-neutral-950/95 border border-neutral-700 rounded-lg p-4 shadow-2xl font-mono text-xs text-neutral-200">
+    <div class="flex items-center justify-between pb-2 mb-2 border-b border-neutral-800">
+      <span class="font-bold text-emerald-400">Active CSS Design Tokens</span>
+      <button onclick="toggleHUD()" class="text-neutral-400 hover:text-white">✕</button>
+    </div>
+    <div id="token-list" class="space-y-1.5"></div>
+  </aside>
+
+  <main id="viewport-frame" class="w-full flex-1 p-6">
+    <!-- [SLOT_OPTION_A] -->
+    <section id="panel-A" class="space-y-6"></section>
+    <!-- [SLOT_OPTION_B] -->
+    <section id="panel-B" class="hidden space-y-6"></section>
+    <!-- [SLOT_OPTION_C] -->
+    <section id="panel-C" class="hidden space-y-6"></section>
+  </main>
+
+  <script>
+    const ARCHETYPES = {
+      A: { name: 'Option A: High-Density Canvas', tokens: { '--color-bg': '#0b0f17', '--color-surface': '#151c28', '--color-text': '#f1f5f9', '--color-text-muted': '#94a3b8', '--color-accent': '#10b981', '--color-border': '#263246', '--radius-ui': '4px' } },
+      B: { name: 'Option B: Editorial Split', tokens: { '--color-bg': '#faf8f5', '--color-surface': '#ffffff', '--color-text': '#18181b', '--color-text-muted': '#52525b', '--color-accent': '#c2410c', '--color-border': '#e4e4e7', '--radius-ui': '24px' } },
+      C: { name: 'Option C: Neo-Brutalist', tokens: { '--color-bg': '#f4f4f0', '--color-surface': '#ffffff', '--color-text': '#09090b', '--color-text-muted': '#3f3f46', '--color-accent': '#eab308', '--color-border': '#09090b', '--radius-ui': '2px' } }
+    };
+    function setArchetype(key) {
+      const config = ARCHETYPES[key];
+      if (!config) return;
+      Object.entries(config.tokens).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
+      ['A', 'B', 'C'].forEach(id => {
+        document.getElementById('panel-' + id).classList.toggle('hidden', id !== key);
+        document.getElementById('btn-' + id).className = (id === key)
+          ? 'px-3 py-1 rounded bg-emerald-500 text-neutral-950 font-bold'
+          : 'px-3 py-1 rounded hover:bg-neutral-800 text-neutral-300';
+      });
+      document.getElementById('active-archetype-label').textContent = config.name;
+      document.getElementById('token-list').innerHTML = Object.entries(config.tokens).map(([k, v]) => `
+        <div class="flex items-center justify-between"><span class="text-neutral-400">${k}</span><span>${v}</span></div>
+      `).join('');
+    }
+    function setViewport(width) { document.getElementById('viewport-frame').style.maxWidth = width; }
+    function toggleHUD() { document.getElementById('token-hud').classList.toggle('hidden'); }
+    window.addEventListener('keydown', (e) => {
+      if (e.key === '1') setArchetype('A');
+      if (e.key === '2') setArchetype('B');
+      if (e.key === '3') setArchetype('C');
+    });
+    setArchetype('A');
+  </script>
+</body>
+</html>

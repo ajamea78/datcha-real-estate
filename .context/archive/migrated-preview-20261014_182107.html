@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Datcha Real Estate — Modern Architectural Studio</title>
+
+  <!-- Google Fonts: Montserrat + Cormorant Garamond -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* ═══════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════ */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{
+      font-family:'Montserrat',system-ui,sans-serif;
+      background:#0a0c0d;
+      color:#f1f5f9;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    /* ═══════════════════════════════════════
+       BRAND CONSTANTS
+    ═══════════════════════════════════════ */
+    :root{
+      --c-charcoal:       #1F2A2E;
+      --c-terracotta:     #C0673F;
+      --c-terracotta-dark:#A8552F;
+      --c-sand:           #DCC7B1;
+      --c-cream:          #F7F3ED;
+      --c-grey:           #8A8F93;
+      --c-green:          #25D366;
+      --f-display:        'Cormorant Garamond', Georgia, serif;
+      --f-body:           'Montserrat', sans-serif;
+    }
+
+    /* ═══════════════════════════════════════
+       THEME TOKENS — SOFT MODERN & ORGANIC
+    ═══════════════════════════════════════ */
+    #vp[data-theme="dark"]{
+      --t-bg:             #1F2A2E;
+      --t-bg-alt:         #151F23;
+      --t-nav-bg:         rgba(21, 31, 35, 0.85);
+      --t-card-bg:        rgba(31, 45, 51, 0.70);
+      --t-card-hover:     rgba(38, 55, 62, 0.85);
+      --t-text:           #F7F3ED;
+      --t-text-sub:       #DCC7B1;
+      --t-text-muted:     #8A8F93;
+      --t-border:         rgba(220, 199, 177, 0.12);
+      --t-border-hi:      rgba(192, 103, 63, 0.40);
+      --t-input-bg:       rgba(21, 31, 35, 0.75);
+      --t-footer-bg:      #0E1618;
+      --t-contrast-bg:    #141E21;
+      --t-shadow:         0 20px 40px -15px rgba(0,0,0,0.5);
+      --t-glow:           0 0 30px rgba(192,103,63,0.18);
+    }
+
+    #vp[data-theme="light"]{
+      --t-bg:             #F7F3ED;
+      --t-bg-alt:         #EFE9DF;
+      --t-nav-bg:         rgba(247, 243, 237, 0.85);
+      --t-card-bg:        #FFFFFF;
+      --t-card-hover:     #FFFFFF;
+      --t-text:           #1F2A2E;
+      --t-text-sub:       #3A4F56;
+      --t-text-muted:     #8A8F93;
+      --t-border:         rgba(31, 42, 46, 0.08);
+      --t-border-hi:      rgba(192, 103, 63, 0.30);
+      --t-input-bg:       #F7F3ED;
+      --t-footer-bg:      #1F2A2E;
+      --t-contrast-bg:    #1F2A2E;
+      --t-shadow:         0 20px 40px -15px rgba(192,103,63,0.08);
+      --t-glow:           0 0 30px rgba(192,103,63,0.12);
+    }
+
+    /* ═══════════════════════════════════════
+       STUDIO BAR (STAGING HEADER)
+    ═══════════════════════════════════════ */
+    #studio-bar{
+      position:sticky;top:0;z-index:9999;
+      background:#0c1114;
+      border-bottom:1px solid rgba(192,103,63,0.25);
+      padding:8px 16px;
+      display:flex;flex-wrap:wrap;align-items:center;
+      justify-content:space-between;gap:8px;
+      font-family:'Courier New',monospace;font-size:11px;color:#DCC7B1;
+    }
+    .sb-badge{
+      background:rgba(192,103,63,0.2);color:#C0673F;
+      border:1px solid rgba(192,103,63,0.4);
+      padding:3px 12px;border-radius:20px;
+      font-weight:700;letter-spacing:0.08em;
+    }
+    .sb-group{
+      display:flex;gap:4px;background:#151D21;padding:3px;
+      border:1px solid rgba(192,103,63,0.2);border-radius:24px;
+    }
+    .s-btn{
+      padding:5px 14px;border-radius:20px;cursor:pointer;
+      font-size:11px;font-family:'Courier New',monospace;
+      font-weight:600;border:none;background:transparent;color:#8A8F93;
+      transition:all 0.2s;white-space:nowrap;
+    }
+    .s-btn:hover{color:#F7F3ED;}
+    .s-btn.active{background:#C0673F;color:#fff;box-shadow:0 2px 8px rgba(192,103,63,0.4);}
+    
+    .theme-toggle{
+      display:flex;align-items:center;gap:6px;
+      background:#151D21;border:1px solid rgba(192,103,63,0.25);
+      border-radius:20px;padding:4px 14px;cursor:pointer;
+      color:#DCC7B1;font-size:11px;font-family:'Courier New',monospace;
+      transition:all 0.2s;
+    }
+    .theme-toggle:hover{border-color:#C0673F;color:#fff;}
+
+    /* ═══════════════════════════════════════
+       VIEWPORT CONTAINER
+    ═══════════════════════════════════════ */
+    #vp{
+      margin:0 auto;
+      background:var(--t-bg);
+      transition:background 0.4s ease, max-width 0.3s cubic-bezier(0.16,1,0.3,1);
+      container-type:inline-size;
+      container-name:vp;
+      min-height:100vh;
+    }
+
+    /* ═══════════════════════════════════════
+       MODERN FLOATING PILL NAVBAR
+    ═══════════════════════════════════════ */
+    .header-wrap{
+      position:sticky;top:10px;z-index:500;
+      padding:0 24px;
+    }
+    .floating-nav{
+      max-width:1240px;margin:0 auto;
+      background:var(--t-nav-bg);
+      backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+      border:1px solid var(--t-border);
+      border-radius:32px;
+      padding:12px 28px;
+      display:flex;align-items:center;justify-content:space-between;
+      box-shadow:var(--t-shadow);
+      transition:all 0.3s;
+    }
+    .nav-logo{
+      display:flex;align-items:center;cursor:pointer;
+      height:42px;width:160px;position:relative;
+    }
+    .nav-logo img{
+      height:100%;width:100%;object-fit:contain;object-position:left;
+    }
+    .nav-links{display:flex;gap:32px;align-items:center;}
+    .nav-link{
+      font-size:11px;font-weight:600;letter-spacing:0.12em;
+      text-transform:uppercase;color:var(--t-text-muted);
+      cursor:pointer;text-decoration:none;transition:color 0.2s;
+    }
+    .nav-link:hover{color:#C0673F;}
+    .nav-cta{
+      background:#C0673F;color:#fff;
+      padding:10px 24px;font-size:11px;font-weight:700;
+      letter-spacing:0.1em;text-transform:uppercase;
+      border:none;cursor:pointer;font-family:var(--f-body);
+      border-radius:24px;transition:all 0.25s;
+      box-shadow:0 4px 15px rgba(192,103,63,0.3);
+    }
+    .nav-cta:hover{
+      background:#A8552F;transform:scale(1.03);
+      box-shadow:0 6px 20px rgba(192,103,63,0.45);
+    }
+
+    /* ═══════════════════════════════════════
+       HERO: SCULPTED ORGANIC FRAME (OPTION A)
+    ═══════════════════════════════════════ */
+    .hero-outer{padding:14px 24px 24px;}
+    .a-hero-frame{
+      position:relative;min-height:86vh;overflow:hidden;
+      border-radius:40px;
+      border:1px solid rgba(255,255,255,0.12);
+      box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
+      display:flex;align-items:center;justify-content:center;
+    }
+    .a-hero-video{
+      position:absolute;inset:0;width:100%;height:100%;
+      object-fit:cover;opacity:0.55;transform:scale(1.05);
+    }
+    .a-hero-gradient{
+      position:absolute;inset:0;
+      background:linear-gradient(180deg,rgba(31,42,46,0.75) 0%,rgba(31,42,46,0.5) 50%,rgba(31,42,46,0.92) 100%);
+    }
+    .a-hero-content{
+      position:relative;z-index:10;text-align:center;
+      padding:60px 24px;max-width:960px;
+    }
+    .eyebrow-pill{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:10px;font-weight:700;letter-spacing:0.25em;
+      text-transform:uppercase;color:#C0673F;
+      background:rgba(31,42,46,0.75);
+      border:1px solid rgba(192,103,63,0.4);
+      padding:6px 20px;border-radius:30px;
+      margin-bottom:28px;backdrop-blur-md;
+    }
+    .hero-title{
+      font-family:var(--f-display);
+      font-size:clamp(38px,6.8vw,86px);
+      font-weight:300;line-height:1.02;
+      color:#F7F3ED;letter-spacing:-0.02em;margin-bottom:22px;
+    }
+    .hero-title em{font-style:italic;color:var(--c-sand);display:block;}
+    .hero-desc{
+      font-size:15px;font-weight:300;color:rgba(220,199,177,0.88);
+      max-width:680px;margin:0 auto 40px;line-height:1.7;letter-spacing:0.02em;
+    }
+    .btn-pill-primary{
+      display:inline-flex;align-items:center;gap:10px;
+      background:#C0673F;color:#fff;
+      padding:16px 38px;font-size:11.5px;font-weight:700;
+      letter-spacing:0.14em;text-transform:uppercase;
+      border-radius:40px;text-decoration:none;
+      box-shadow:0 8px 25px rgba(192,103,63,0.4);
+      transition:all 0.3s;cursor:pointer;border:none;
+    }
+    .btn-pill-primary:hover{
+      background:#A8552F;transform:scale(1.03);
+      box-shadow:0 12px 30px rgba(192,103,63,0.55);
+    }
+    .btn-pill-ghost{
+      display:inline-flex;align-items:center;gap:10px;
+      background:rgba(255,255,255,0.06);color:#F7F3ED;
+      border:1px solid rgba(220,199,177,0.35);
+      padding:15px 36px;font-size:11.5px;font-weight:600;
+      letter-spacing:0.12em;text-transform:uppercase;
+      border-radius:40px;text-decoration:none;
+      backdrop-filter:blur(8px);transition:all 0.3s;cursor:pointer;
+    }
+    .btn-pill-ghost:hover{
+      border-color:#C0673F;color:#C0673F;background:rgba(192,103,63,0.1);
+    }
+
+    /* ═══════════════════════════════════════
+       OPTION B: ASYMMETRIC EDITORIAL FRAME
+    ═══════════════════════════════════════ */
+    .b-hero-frame{
+      display:grid;grid-template-columns:55% 45%;
+      min-height:85vh;border-radius:40px;overflow:hidden;
+      background:var(--t-card-bg);
+      border:1px solid var(--t-border);
+      box-shadow:var(--t-shadow);
+    }
+    .b-hero-left{
+      padding:80px 64px;display:flex;flex-direction:column;justify-content:center;
+    }
+    .b-hero-right{
+      position:relative;overflow:hidden;padding:32px;display:flex;align-items:flex-end;
+    }
+    .b-hero-right img{
+      position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    }
+    .b-hero-glass-card{
+      position:relative;z-index:2;width:100%;
+      background:rgba(15,22,25,0.7);backdrop-filter:blur(20px);
+      border:1px solid rgba(255,255,255,0.15);
+      border-radius:28px;padding:28px;color:#F7F3ED;
+    }
+
+    /* ═══════════════════════════════════════
+       FLOATING METRICS CAPSULE
+    ═══════════════════════════════════════ */
+    .metrics-capsule{
+      max-width:1200px;margin:-30px auto 40px;position:relative;z-index:20;
+      background:var(--t-card-bg);
+      border:1px solid var(--t-border);
+      border-radius:32px;
+      padding:24px 48px;
+      display:grid;grid-template-columns:repeat(4,1fr);
+      box-shadow:var(--t-shadow);
+    }
+    .metric-col{
+      text-align:center;padding:12px 0;
+      border-right:1px solid var(--t-border);
+    }
+    .metric-col:last-child{border-right:none;}
+    .metric-val{
+      font-family:var(--f-display);font-size:42px;font-weight:700;
+      color:#C0673F;line-height:1;margin-bottom:6px;
+    }
+    .metric-lbl{
+      font-size:10px;font-weight:700;letter-spacing:0.16em;
+      text-transform:uppercase;color:var(--t-text-muted);
+    }
+
+    /* ═══════════════════════════════════════
+       SECTION COMMON
+    ═══════════════════════════════════════ */
+    .section{padding:90px 24px;}
+    .section-inner{max-width:1240px;margin:0 auto;}
+    .sec-tag{
+      font-size:10px;font-weight:700;letter-spacing:0.25em;
+      text-transform:uppercase;color:#C0673F;display:block;margin-bottom:10px;
+    }
+    .sec-heading{
+      font-family:var(--f-display);font-size:clamp(32px,4vw,56px);
+      font-weight:600;color:var(--t-text);line-height:1.05;margin-bottom:48px;
+    }
+    .sec-heading em{font-style:italic;font-weight:300;color:var(--c-sand);}
+
+    /* ═══════════════════════════════════════
+       ORGANIC CARDS (DESTINATIONS & OFFERINGS)
+    ═══════════════════════════════════════ */
+    .cards-grid-5{
+      display:grid;grid-template-columns:repeat(5,1fr);gap:20px;
+    }
+    .organic-card{
+      background:var(--t-card-bg);
+      border:1px solid var(--t-border);
+      border-radius:32px;padding:34px 26px;
+      display:flex;flex-direction:column;justify-content:space-between;
+      transition:all 0.35s cubic-bezier(0.16,1,0.3,1);
+      box-shadow:var(--t-shadow);cursor:pointer;position:relative;overflow:hidden;
+    }
+    .organic-card:hover{
+      transform:translateY(-8px);
+      border-color:var(--t-border-hi);
+      background:var(--t-card-hover);
+      box-shadow:0 30px 60px -15px rgba(192,103,63,0.18);
+    }
+    .card-num{
+      font-size:10px;font-weight:800;letter-spacing:0.15em;
+      color:#C0673F;margin-bottom:16px;
+    }
+    .card-title{
+      font-family:var(--f-display);font-size:24px;font-weight:600;
+      color:var(--t-text);line-height:1.15;margin-bottom:8px;
+    }
+    .card-tag{
+      font-size:11px;font-weight:600;color:#C0673F;margin-bottom:14px;
+    }
+    .card-desc{
+      font-size:12px;color:var(--t-text-muted);line-height:1.65;
+    }
+    .card-link{
+      margin-top:24px;display:flex;align-items:center;justify-content:space-between;
+      font-size:11px;font-weight:700;color:#C0673F;text-transform:uppercase;letter-spacing:0.1em;
+    }
+    .icon-badge{
+      width:52px;height:52px;border-radius:20px;
+      background:rgba(192,103,63,0.12);border:1px solid rgba(192,103,63,0.3);
+      display:flex;align-items:center;justify-content:center;
+      font-size:24px;margin-bottom:20px;color:#C0673F;
+    }
+
+    /* ═══════════════════════════════════════
+       WHY US: INSTITUTIONAL TRUST CAPSULE
+    ═══════════════════════════════════════ */
+    .trust-capsule{
+      background:var(--t-contrast-bg);
+      border:1px solid var(--t-border);
+      border-radius:44px;padding:70px 56px;
+      box-shadow:var(--t-shadow);
+    }
+    .trust-grid{
+      display:grid;grid-template-columns:5fr 7fr;gap:64px;align-items:center;
+    }
+    .pillars-2x2{
+      display:grid;grid-template-columns:1fr 1fr;gap:20px;
+    }
+    .pillar-pill{
+      background:rgba(0,0,0,0.3);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:28px;padding:30px 24px;
+      transition:all 0.3s;
+    }
+    .pillar-pill:hover{
+      border-color:rgba(192,103,63,0.5);transform:translateY(-3px);
+    }
+    .pillar-num{font-size:11px;font-weight:700;color:#C0673F;margin-bottom:8px;}
+    .pillar-name{font-family:var(--f-display);font-size:20px;font-weight:600;color:#F7F3ED;margin-bottom:8px;}
+    .pillar-text{font-size:12px;color:var(--c-grey);line-height:1.65;}
+
+    /* ═══════════════════════════════════════
+       TESTIMONIALS (ROUNDED 32PX)
+    ═══════════════════════════════════════ */
+    .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+    .testi-capsule{
+      background:var(--t-card-bg);border:1px solid var(--t-border);
+      border-radius:32px;padding:38px 30px;
+      display:flex;flex-direction:column;justify-content:space-between;
+      box-shadow:var(--t-shadow);
+    }
+    .testi-quote{
+      font-size:13.5px;line-height:1.75;font-style:italic;
+      color:var(--t-text);margin-bottom:24px;
+    }
+    .testi-quote::before{
+      content:'\201C';font-family:var(--f-display);font-size:52px;
+      color:#C0673F;line-height:0.8;display:block;margin-bottom:6px;
+    }
+
+    /* ═══════════════════════════════════════
+       CONTACT CAPSULE WITH CURVED INPUTS
+    ═══════════════════════════════════════ */
+    .contact-card{
+      background:var(--t-card-bg);border:1px solid var(--t-border);
+      border-radius:40px;padding:56px 48px;
+      box-shadow:var(--t-shadow);
+    }
+    .curved-input{
+      width:100%;border:1px solid var(--t-border);
+      background:var(--t-input-bg);color:var(--t-text);
+      padding:14px 20px;border-radius:18px;font-size:13px;
+      font-family:var(--f-body);outline:none;
+      transition:all 0.2s;
+    }
+    .curved-input:focus{border-color:#C0673F;box-shadow:0 0 15px rgba(192,103,63,0.25);}
+    textarea.curved-input{resize:none;min-height:110px;border-radius:24px;}
+    .input-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+    .input-lbl{
+      display:block;font-size:10px;font-weight:700;letter-spacing:0.14em;
+      text-transform:uppercase;color:var(--t-text-muted);margin-bottom:6px;padding-left:6px;
+    }
+
+    /* ═══════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════ */
+    .footer-capsule{
+      background:var(--t-footer-bg);padding:48px 36px;
+      border-top:1px solid rgba(192,103,63,0.15);
+      margin-top:auto;
+    }
+    .footer-inner{
+      max-width:1240px;margin:0 auto;display:flex;
+      justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;
+    }
+    .footer-logo{height:44px;width:170px;}
+    .footer-logo img{height:100%;width:100%;object-fit:contain;object-position:left;}
+
+    /* ═══════════════════════════════════════
+       FLOATING WHATSAPP BUTTON (ROUNDED 50%)
+    ═══════════════════════════════════════ */
+    .wa-fab{
+      position:fixed;bottom:26px;right:26px;z-index:9000;
+      width:58px;height:58px;border-radius:50%;
+      background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;
+      font-size:26px;cursor:pointer;box-shadow:0 8px 30px rgba(37,211,102,0.45);
+      transition:transform 0.25s;text-decoration:none;
+    }
+    .wa-fab:hover{transform:scale(1.12);}
+
+    .hidden{display:none!important;}
+
+    /* ═══════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════ */
+    @container vp (max-width:1023px){
+      .cards-grid-5{grid-template-columns:repeat(2,1fr);}
+      .metrics-capsule{grid-template-columns:repeat(2,1fr);gap:16px;padding:24px;}
+      .metric-col{border-right:none;}
+      .trust-grid{grid-template-columns:1fr;}
+      .testi-grid{grid-template-columns:1fr;}
+      .b-hero-frame{grid-template-columns:1fr;}
+      .nav-links{display:none;}
+    }
+    @container vp (max-width:639px){
+      .cards-grid-5{grid-template-columns:1fr;}
+      .metrics-capsule{grid-template-columns:1fr;}
+      .input-row{grid-template-columns:1fr;}
+      .trust-capsule{padding:32px 20px;}
+      .pillars-2x2{grid-template-columns:1fr;}
+      .a-hero-frame{border-radius:28px;}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── TOP STAGING CONTROLS ─── -->
+  <header id="studio-bar">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="sb-badge">STAGING PREVIEW</span>
+      <span id="active-lbl" style="color:#8A8F93;">Option A: Cinematic Dramatic</span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <div class="sb-group">
+        <button id="btn-A" class="s-btn active" onclick="setArch('A')">Option A: Cinematic</button>
+        <button id="btn-B" class="s-btn" onclick="setArch('B')">Option B: Editorial</button>
+      </div>
+      <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()">
+        <span id="theme-ico">☀️</span>
+        <span id="theme-txt">Light Mode</span>
+      </button>
+      <div class="sb-group">
+        <button id="vp-d" class="s-btn active" onclick="setVp('100%','vp-d')">Desktop</button>
+        <button id="vp-t" class="s-btn" onclick="setVp('768px','vp-t')">Tablet</button>
+        <button id="vp-m" class="s-btn" onclick="setVp('390px','vp-m')">Mobile</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── MAIN VIEWPORT (DATA-THEME CONTROLLED) ─── -->
+  <main id="vp" data-theme="dark">
+
+    <!-- ─── FLOATING PILL NAVBAR ─── -->
+    <div class="header-wrap">
+      <nav class="floating-nav">
+        <a class="nav-logo" href="#hero">
+          <img id="nav-logo-img" src="/logo-light.png" alt="Datcha Real Estate Logo"/>
+        </a>
+        <div class="nav-links">
+          <a class="nav-link" href="#destinations">Destinations</a>
+          <a class="nav-link" href="#offerings">Portfolio</a>
+          <a class="nav-link" href="#why-us">Why Datcha</a>
+          <a class="nav-link" href="#testimonials">Testimonials</a>
+          <a class="nav-link" href="#contact">Contact</a>
+        </div>
+        <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Book Consultation</button>
+      </nav>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         DIRECTION A: CINEMATIC SCULPTED HERO
+    ═══════════════════════════════════════ -->
+    <div id="dir-A">
+      <section class="hero-outer" id="hero">
+        <div class="a-hero-frame">
+          <video class="a-hero-video" autoplay muted loop playsinline>
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-shot-of-blue-ocean-waves-1260-large.mp4" type="video/mp4"/>
+          </video>
+          <div class="a-hero-gradient"></div>
+          <div class="a-hero-content">
+            <div class="eyebrow-pill">✦ Red Sea, Egypt · Hurghada · El Gouna · Sahl Hasheesh · Soma Bay</div>
+            <h1 class="hero-title">
+              More than properties.
+              <em>A lifestyle by the Red Sea.</em>
+            </h1>
+            <p class="hero-desc">
+              Homes. Investments. A Brighter Tomorrow. Prime coastal land plots, sea-view residences, and high-return commercial opportunities tailored to your life vision.
+            </p>
+            <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+              <button class="btn-pill-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+                Explore Offerings →
+              </button>
+              <button class="btn-pill-ghost" onclick="document.getElementById('why-us').scrollIntoView({behavior:'smooth'})">
+                Our Philosophy
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         DIRECTION B: ASYMMETRIC EDITORIAL HERO
+    ═══════════════════════════════════════ -->
+    <div id="dir-B" class="hidden">
+      <section class="hero-outer" id="hero-b">
+        <div class="b-hero-frame">
+          <div class="b-hero-left">
+            <span class="sec-tag">High-End Architectural & Brokerage Portfolio</span>
+            <h1 class="hero-title" style="color:var(--t-text);text-align:left;">
+              MORE THAN<br/><span style="color:#C0673F">PROPERTIES.</span><br/>
+              <em>A lifestyle by the Red Sea.</em>
+            </h1>
+            <p class="hero-desc" style="text-align:left;margin:0 0 36px 0;">
+              Curating Egypt&apos;s most desirable coastal land parcels, waterfront residences, and bespoke commercial investments with absolute legal security and multilingual transparency.
+            </p>
+            <div style="display:flex;gap:14px;flex-wrap:wrap;">
+              <button class="btn-pill-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+                Consult Our Advisors
+              </button>
+              <button class="btn-pill-ghost" style="color:var(--t-text)" onclick="document.getElementById('destinations').scrollIntoView({behavior:'smooth'})">
+                View Destinations →
+              </button>
+            </div>
+          </div>
+          <div class="b-hero-right">
+            <img src="/brand-hero-pool.jpg" alt="Datcha Red Sea Architecture"/>
+            <div class="b-hero-glass-card">
+              <span style="font-size:10px;font-weight:700;color:#C0673F;text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:4px;">Featured Coastal Corridor</span>
+              <div style="font-family:var(--f-display);font-size:22px;font-weight:600;margin-bottom:4px;">El Gouna & Sahl Hasheesh Coast</div>
+              <div style="font-size:11px;color:#DCC7B1;">5 Key Hotspots · 4 Global Languages · 100% Legal Certainty</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ─── FLOATING METRICS CAPSULE ─── -->
+    <div class="metrics-capsule">
+      <div class="metric-col">
+        <div class="metric-val">500+</div>
+        <div class="metric-lbl">Deals Closed</div>
+      </div>
+      <div class="metric-col">
+        <div class="metric-val">15+</div>
+        <div class="metric-lbl">Years Active</div>
+      </div>
+      <div class="metric-col">
+        <div class="metric-val">5</div>
+        <div class="metric-lbl">Prime Destinations</div>
+      </div>
+      <div class="metric-col">
+        <div class="metric-val">4</div>
+        <div class="metric-lbl">Languages Spoken</div>
+      </div>
+    </div>
+
+    <!-- ─── 5 PRIME DESTINATIONS SHOWCASE ─── -->
+    <section class="section" id="destinations">
+      <div class="section-inner">
+        <span class="sec-tag">Regional Footprint</span>
+        <h2 class="sec-heading">The Red Sea <em>coastline.</em></h2>
+        <div class="cards-grid-5">
+          <div class="organic-card">
+            <div>
+              <div class="card-num">01 / COAST</div>
+              <h3 class="card-title">Hurghada</h3>
+              <div class="card-tag">Urban Energy & Commerce</div>
+              <p class="card-desc">The beating heart of the Red Sea. High-yield commercial assets, international schools, and premier marina residences.</p>
+            </div>
+            <div class="card-link"><span>Explore Assets</span><span>→</span></div>
+          </div>
+          <div class="organic-card">
+            <div>
+              <div class="card-num">02 / COAST</div>
+              <h3 class="card-title">El Gouna</h3>
+              <div class="card-tag">Venetian Lagoons & Prestige</div>
+              <p class="card-desc">An eco-chic resort town renowned for international festivals, world-class golf, kite beaches, and private villas.</p>
+            </div>
+            <div class="card-link"><span>Explore Assets</span><span>→</span></div>
+          </div>
+          <div class="organic-card">
+            <div>
+              <div class="card-num">03 / COAST</div>
+              <h3 class="card-title">Sahl Hasheesh</h3>
+              <div class="card-tag">Gated Bay & Beachfront</div>
+              <p class="card-desc">12 km of golden beachfront. A prestigious master-planned community favored by European investors and wellness enthusiasts.</p>
+            </div>
+            <div class="card-link"><span>Explore Assets</span><span>→</span></div>
+          </div>
+          <div class="organic-card">
+            <div>
+              <div class="card-num">04 / COAST</div>
+              <h3 class="card-title">Makadi Bay</h3>
+              <div class="card-tag">Family Retreat & Waters</div>
+              <p class="card-desc">Tranquil coastal living with gentle bays, protected coral reefs, and tranquil gated residential developments.</p>
+            </div>
+            <div class="card-link"><span>Explore Assets</span><span>→</span></div>
+          </div>
+          <div class="organic-card">
+            <div>
+              <div class="card-num">05 / COAST</div>
+              <h3 class="card-title">Soma Bay</h3>
+              <div class="card-tag">Peninsula Luxury</div>
+              <p class="card-desc">A breathtaking peninsula surrounded by azure sea. Championship golf, spa sanctuaries, and private sea-facing parcels.</p>
+            </div>
+            <div class="card-link"><span>Explore Assets</span><span>→</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 5 CORE ASSET CLASSES ─── -->
+    <section class="section" id="offerings" style="background:var(--t-bg-alt);">
+      <div class="section-inner">
+        <span class="sec-tag">Portfolio Representation</span>
+        <h2 class="sec-heading">Five core asset <em>classes.</em></h2>
+        <div class="cards-grid-5">
+          <div class="organic-card">
+            <div>
+              <div class="icon-badge">🏞️</div>
+              <div class="card-tag">STRATEGIC ACQUISITION</div>
+              <h3 class="card-title">Prime Land Plots</h3>
+              <p class="card-desc">Freehold and zoned plots in prime expansion corridors of Hurghada, Sahl Hasheesh, and Soma Bay with verified rights.</p>
+            </div>
+            <div class="card-link"><span>Inquire Asset</span><span>→</span></div>
+          </div>
+          <div class="organic-card">
+            <div>
+              <div class="icon-badge">🏖️</div>
+              <div class="card-tag">HIGH RENTAL YIELD</div>
+              <h3 class="card-title">Sea-View Apts</h3>
+              <p class="card-desc">Curated 1- to 4-bedroom apartments offering panoramic sea views, rental pool programs, and resort amenities.</p>
+            </div>
+            <div class="card-link"><span>Inquire Asset</span><span>→</span></div>
+          </div>
+          <div class="organic-card">
+            <div>
+              <div class="icon-badge">🏡</div>
+              <div class="card-tag">SIGNATURE ESTATES</div>
+              <h3 class="card-title">Villas & Homes</h3>
+              <p class="card-desc">Private luxury villas with swimming pools and lush landscaping across El Gouna lagoons and Sahl Hasheesh beachfronts.</p>
+            </div>
+            <div class="card-link"><span>Inquire Asset</span><span>→</span></div>
+          </div>
+          <div class="organic-card">
+            <div>
+              <div class="icon-badge">🏪</div>
+              <div class="card-tag">HIGH FOOTFALL HUBS</div>
+              <h3 class="card-title">Commercial Shops</h3>
+              <p class="card-desc">Prime retail outlets and showrooms in bustling tourism, marina, and hospitality promenades.</p>
+            </div>
+            <div class="card-link"><span>Inquire Asset</span><span>→</span></div>
+          </div>
+          <div class="organic-card">
+            <div>
+              <div class="icon-badge">🏢</div>
+              <div class="card-tag">CORPORATE HQS</div>
+              <h3 class="card-title">Business Offices</h3>
+              <p class="card-desc">Modern administrative and corporate office suites catering to local firms and multinational regional branches.</p>
+            </div>
+            <div class="card-link"><span>Inquire Asset</span><span>→</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── WHY US: INSTITUTIONAL TRUST CAPSULE ─── -->
+    <section class="section" id="why-us">
+      <div class="section-inner">
+        <div class="trust-capsule">
+          <div class="trust-grid">
+            <div>
+              <span class="sec-tag">Institutional Confidence</span>
+              <h2 style="font-family:var(--f-display);font-size:clamp(30px,3.8vw,52px);font-weight:600;color:#F7F3ED;line-height:1.05;margin-bottom:20px;">
+                Built on Trust.<br/><span style="color:#C0673F">Driven by Results.</span>
+              </h2>
+              <p style="font-size:13.5px;color:#DCC7B1;line-height:1.75;margin-bottom:30px;">
+                Operating in Egypt&apos;s luxury coastal market demands precision, deep local connections, and rigorous contractual protection. We safeguard your capital from initial consultation to final deed registry.
+              </p>
+              <div style="padding:20px 24px;border-radius:20px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);">
+                <div style="font-size:11px;font-weight:700;color:#C0673F;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Multilingual Capability</div>
+                <div style="font-size:12px;color:#F7F3ED;">Fluent advisory in <strong>English, Arabic, Russian, and German</strong>. No miscommunication, zero surprises.</div>
+              </div>
+            </div>
+            <div class="pillars-2x2">
+              <div class="pillar-pill">
+                <div class="pillar-num">01 / EXPERTISE</div>
+                <div class="pillar-name">Local Mastery</div>
+                <div class="pillar-text">15+ years of daily immersion in Red Sea real estate. We know the developers, zoning shifts, and true market values.</div>
+              </div>
+              <div class="pillar-pill">
+                <div class="pillar-num">02 / INTEGRITY</div>
+                <div class="pillar-name">Transparent Terms</div>
+                <div class="pillar-text">Clear fee structures, realistic ROI expectations, and zero hidden costs. Complete visibility from first tour to closing.</div>
+              </div>
+              <div class="pillar-pill">
+                <div class="pillar-num">03 / GLOBAL</div>
+                <div class="pillar-name">Multilingual Team</div>
+                <div class="pillar-text">Native-level support tailored to international investors and expat families across Europe, the Gulf, and North Africa.</div>
+              </div>
+              <div class="pillar-pill">
+                <div class="pillar-num">04 / LEGAL</div>
+                <div class="pillar-name">End-to-End Law</div>
+                <div class="pillar-text">Comprehensive title deed vetting, municipal registry compliance, and bilingual contract drafting by senior property attorneys.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── CLIENT STORIES ─── -->
+    <section class="section" id="testimonials" style="background:var(--t-bg-alt);">
+      <div class="section-inner">
+        <span class="sec-tag">Client Experiences</span>
+        <h2 class="sec-heading">Trusted <em>globally.</em></h2>
+        <div class="testi-grid">
+          <div class="testi-capsule">
+            <div class="testi-quote">Working with Datcha was seamless. As an investor from Moscow, purchasing a sea-view apartment in El Gouna felt effortless. Their Russian-speaking legal advisor reviewed every clause.</div>
+            <div style="border-top:1px solid var(--t-border);padding-top:16px;">
+              <div style="font-weight:700;font-size:13px;color:var(--t-text);">Mikhail & Elena V.</div>
+              <div style="font-size:11px;color:#C0673F;font-weight:600;">Lagoon Apartment, El Gouna</div>
+              <div style="font-size:10px;color:var(--t-text-muted);">Moscow, Russia</div>
+            </div>
+          </div>
+          <div class="testi-capsule">
+            <div class="testi-quote">Finding our retirement home in Sahl Hasheesh could have been daunting, but Datcha&apos;s clarity and patience stood out. They treated us like family and ensured clean title deeds.</div>
+            <div style="border-top:1px solid var(--t-border);padding-top:16px;">
+              <div style="font-weight:700;font-size:13px;color:var(--t-text);">David Harrington</div>
+              <div style="font-size:11px;color:#C0673F;font-weight:600;">Beachfront Villa, Sahl Hasheesh</div>
+              <div style="font-size:10px;color:var(--t-text-muted);">Manchester, UK</div>
+            </div>
+          </div>
+          <div class="testi-capsule">
+            <div class="testi-quote">تجربتنا مع فريق داتشا كانت نموذجية في الأمانة والاحتراف. استثمرنا في أرض تجارية بالغردقة وكانت كل الإجراءات القانونية واضحة وموثقة بدقة تامة.</div>
+            <div style="border-top:1px solid var(--t-border);padding-top:16px;">
+              <div style="font-weight:700;font-size:13px;color:var(--t-text);">م. طارق عبد العزيز</div>
+              <div style="font-size:11px;color:#C0673F;font-weight:600;">Commercial Plot, Hurghada</div>
+              <div style="font-size:10px;color:var(--t-text-muted);">Cairo, Egypt</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── LEAD CAPTURE CONTACT ─── -->
+    <section class="section" id="contact">
+      <div class="section-inner">
+        <div class="contact-card">
+          <div style="display:grid;grid-template-columns:1fr 1.3fr;gap:56px;">
+            <div>
+              <span class="sec-tag">Initiate Conversation</span>
+              <h2 style="font-family:var(--f-display);font-size:clamp(28px,3.5vw,46px);font-weight:600;color:var(--t-text);line-height:1.1;margin-bottom:18px;">
+                Begin your Red Sea acquisition.
+              </h2>
+              <p style="font-size:13px;color:var(--t-text-muted);line-height:1.75;margin-bottom:32px;">
+                Whether you seek an executive plot, vacation penthouse, or corporate retail footprint, our senior brokers will curate tailored dossiers aligned with your financial horizons.
+              </p>
+              <div style="display:flex;flex-direction:column;gap:14px;font-size:12px;color:var(--t-text);">
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <span style="font-size:18px;">📞</span>
+                  <span>+20 123 456 7990 (Direct & WhatsApp)</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <span style="font-size:18px;">✉️</span>
+                  <span>inquiries@datcharealestate.com</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <span style="font-size:18px;">📍</span>
+                  <span>Hurghada Marina Promenade, Red Sea, Egypt</span>
+                </div>
+              </div>
+              <div style="margin-top:36px;padding-top:28px;border-top:1px solid var(--t-border);">
+                <a href="https://wa.me/201234567990?text=Hello%20Datcha%20Real%20Estate" target="_blank" class="btn-pill-primary" style="background:#25D366;box-shadow:0 8px 25px rgba(37,211,102,0.35);">
+                  💬 Chat With Advisor on WhatsApp
+                </a>
+              </div>
+            </div>
+
+            <form onsubmit="alert('Thank you. A dedicated portfolio advisor will contact you within 24 hours.'); return false;">
+              <div class="input-row">
+                <div>
+                  <label class="input-lbl">Full Name *</label>
+                  <input class="curved-input" type="text" placeholder="Your name" required/>
+                </div>
+                <div>
+                  <label class="input-lbl">Email Address *</label>
+                  <input class="curved-input" type="email" placeholder="you@investments.com" required/>
+                </div>
+              </div>
+              <div class="input-row">
+                <div>
+                  <label class="input-lbl">Phone / WhatsApp *</label>
+                  <input class="curved-input" type="tel" placeholder="+20 / +44 / +7..." required/>
+                </div>
+                <div>
+                  <label class="input-lbl">Preferred Language</label>
+                  <select class="curved-input">
+                    <option>English</option>
+                    <option>العربية (Arabic)</option>
+                    <option>Русский (Russian)</option>
+                    <option>Deutsch (German)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="input-row">
+                <div>
+                  <label class="input-lbl">Asset Class</label>
+                  <select class="curved-input">
+                    <option>Prime Land Plots</option>
+                    <option>Sea-View Apartments</option>
+                    <option>Residential Villas</option>
+                    <option>Commercial Shops</option>
+                    <option>Business Offices</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="input-lbl">Destination</label>
+                  <select class="curved-input">
+                    <option>Hurghada</option>
+                    <option>El Gouna</option>
+                    <option>Sahl Hasheesh</option>
+                    <option>Makadi Bay</option>
+                    <option>Soma Bay</option>
+                  </select>
+                </div>
+              </div>
+              <div style="margin-bottom:20px;">
+                <label class="input-lbl">Message & Criteria</label>
+                <textarea class="curved-input" placeholder="Desired space, budget range, or timelines..."></textarea>
+              </div>
+              <button type="submit" class="btn-pill-primary" style="width:100%;justify-content:center;">
+                Submit Confidential Inquiry →
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── FOOTER ─── -->
+    <footer class="footer-capsule">
+      <div class="footer-inner">
+        <div class="footer-logo">
+          <img src="/logo-light.png" alt="Datcha Real Estate"/>
+        </div>
+        <div style="display:flex;gap:28px;font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#8A8F93;">
+          <a href="#destinations" style="color:inherit;text-decoration:none;">Destinations</a>
+          <a href="#offerings" style="color:inherit;text-decoration:none;">Portfolio</a>
+          <a href="#why-us" style="color:inherit;text-decoration:none;">Why Datcha</a>
+          <a href="#testimonials" style="color:inherit;text-decoration:none;">Testimonials</a>
+          <a href="#contact" style="color:inherit;text-decoration:none;">Contact</a>
+        </div>
+        <div style="font-size:11px;color:#8A8F93;text-align:right;">
+          © 2026 Datcha Real Estate. All rights reserved.<br/>
+          datcharealestate.com · Red Sea Governorate, Egypt
+        </div>
+      </div>
+    </footer>
+
+    <!-- ─── FLOATING WHATSAPP ─── -->
+    <a href="https://wa.me/201234567990?text=Hello%20Datcha%20Real%20Estate" target="_blank" class="wa-fab" title="Chat on WhatsApp">💬</a>
+
+  </main>
+
+  <script>
+    let currentArch = 'A';
+    let currentTheme = 'dark';
+
+    function setArch(key) {
+      currentArch = key;
+      document.getElementById('dir-A').classList.toggle('hidden', key !== 'A');
+      document.getElementById('dir-B').classList.toggle('hidden', key !== 'B');
+      document.getElementById('btn-A').classList.toggle('active', key === 'A');
+      document.getElementById('btn-B').classList.toggle('active', key === 'B');
+      document.getElementById('active-lbl').textContent =
+        key === 'A' ? 'Option A: Cinematic Dramatic' : 'Option B: Editorial Split';
+    }
+
+    function toggleTheme() {
+      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      const vp = document.getElementById('vp');
+      const logoImg = document.getElementById('nav-logo-img');
+      const themeTxt = document.getElementById('theme-txt');
+      const themeIco = document.getElementById('theme-ico');
+
+      vp.setAttribute('data-theme', currentTheme);
+
+      if (currentTheme === 'light') {
+        logoImg.src = '/logo-dark.png';
+        themeTxt.textContent = 'Dark Mode';
+        themeIco.textContent = '🌙';
+      } else {
+        logoImg.src = '/logo-light.png';
+        themeTxt.textContent = 'Light Mode';
+        themeIco.textContent = '☀️';
+      }
+    }
+
+    function setVp(w, btnId) {
+      document.getElementById('vp').style.maxWidth = w;
+      document.querySelectorAll('#vp-d, #vp-t, #vp-m').forEach(b => b.classList.remove('active'));
+      document.getElementById(btnId).classList.add('active');
+    }
+  </script>
+</body>
+</html>

@@ -10,3 +10,6 @@ __pycache__/
 coverage/
 .agents/state/
 diagnostics.log
+.agents/studio/
+.next/
+out/

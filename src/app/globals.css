@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Brand Immutable Constants */
+    --c-charcoal: #1F2A2E;
+    --c-terracotta: #C0673F;
+    --c-terracotta-dark: #A8552F;
+    --c-sand: #DCC7B1;
+    --c-cream: #F7F3ED;
+    --c-grey: #8A8F93;
+    --c-green: #25D366;
+
+    /* Theme defaults: Dark (Dramatic Luxury) */
+    --t-bg: #141C1F;
+    --t-bg-alt: #0D1316;
+    --t-bg-deep: #070B0D;
+    --t-nav-bg: rgba(20, 28, 31, 0.88);
+    --t-surface: rgba(31, 42, 46, 0.65);
+    --t-card-bg: rgba(23, 33, 37, 0.75);
+    --t-card-hover: rgba(31, 44, 49, 0.90);
+    --t-text: #F7F3ED;
+    --t-text-sub: #DCC7B1;
+    --t-text-muted: #8A8F93;
+    --t-border: rgba(220, 199, 177, 0.12);
+    --t-border-hi: rgba(192, 103, 63, 0.45);
+    --t-input-bg: rgba(16, 23, 26, 0.85);
+    --t-footer-bg: #070B0D;
+    --t-pill-bg: rgba(192, 103, 63, 0.12);
+    --t-pill-text: #DCC7B1;
+    --t-contrast-bg: #0B1012;
+    --t-contrast-text: #F7F3ED;
+    --t-curve-fill: #141C1F;
+  }
+
+  [data-theme="light"] {
+    --t-bg: #F7F3ED;
+    --t-bg-alt: #EDE7DC;
+    --t-bg-deep: #E2D8CA;
+    --t-nav-bg: rgba(247, 243, 237, 0.88);
+    --t-surface: rgba(255, 255, 255, 0.75);
+    --t-card-bg: #FFFFFF;
+    --t-card-hover: #FFFFFF;
+    --t-text: #1F2A2E;
+    --t-text-sub: #3A4F56;
+    --t-text-muted: #8A8F93;
+    --t-border: rgba(31, 42, 46, 0.08);
+    --t-border-hi: rgba(192, 103, 63, 0.35);
+    --t-input-bg: #FFFFFF;
+    --t-footer-bg: #1F2A2E;
+    --t-pill-bg: rgba(192, 103, 63, 0.09);
+    --t-pill-text: #C0673F;
+    --t-contrast-bg: #1F2A2E;
+    --t-contrast-text: #F7F3ED;
+    --t-curve-fill: #F7F3ED;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--t-bg);
+    color: var(--t-text);
+    font-family: var(--font-montserrat), sans-serif;
+    transition: background-color 0.4s ease, color 0.4s ease;
+    overflow-x: hidden;
+  }
+}
+
+/* Luxury Grain Overlay Texture */
+.bg-grain {
+  background-image: radial-gradient(rgba(220, 199, 177, 0.04) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* Ambient Breathing Glow */
+@keyframes ambientGlow {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+    opacity: 0.16;
+  }
+  50% {
+    transform: translate(35px, -25px) scale(1.15);
+    opacity: 0.28;
+  }
+}
+
+.animate-ambient-glow {
+  animation: ambientGlow 14s ease-in-out infinite;
+}
+
+/* Continuous Marquee Ticker */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 32s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Architectural Curves handled via inline SVG components with zero negative margin */
+
+/* Hide scrollbar for clean carousels */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Smooth Image Scale on Card Hover */
+.group:hover .img-zoom {
+  transform: scale(1.08);
+}
+.img-zoom {
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}

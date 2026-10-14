@@ -1,18 +1,10 @@
-# Core Behavioral Rules for AI Agents
-
-1. **Protocol Adherence**:
-   - Execute `omni context <id>` to load ONLY the context needed for your active phase.
-   - NEVER skip workflow phases or invent phantom dependencies, SDKs, or unverified endpoints.
-
-2. **Phase-Gating & Zero-Drift Rule**:
-   - You MUST follow workflows in `.agents/workflows/` sequentially.
-   - When a workflow specifies a `✋ STOP POINT`, present your analysis/plan, HALT execution, and ask the user for confirmation before proceeding.
-   - For UI/UX changes, ALWAYS generate a visual prototype file (`public/design-preview.html`) and launch the Browser Agent BEFORE writing production component code.
-
-3. **Verification Gates**:
-   - Every feature delivery MUST pass `./scripts/verify.sh` with ZERO errors.
-   - Hardcoded hex values in component styling are strictly forbidden (`./scripts/check-tokens.sh`).
-   - Never print or leak secrets, API keys, or raw `.env` contents (`./scripts/scan-secrets.sh`).
-
-4. **Safety Net**:
-   - Always run `omni checkpoint "<task>"` before making structural modifications to codebase files.
+# Omni v8.1 Core Runtime Rules (Adaptive Co-Founder & Anti-Split-Brain Mode)
+1. **Zero-Touch Bootstrap**: If `.context/00_INDEX.md` is missing, run `omni init` automatically. If existing code is present, run `omni recon` first.
+2. **Adaptive Co-Founder Consultation**: Load `.agents/skills/omni-cofounder-architect/SKILL.md` when initiating or planning. Proactively explain options, give a Recommended Default, and ask clarifying questions until reaching 95%+ confidence.
+3. **Anti-Split-Brain UI Law (CRITICAL)**:
+   - NEVER create or leave `public/design-preview.html` inside `public/`.
+   - Temporary 3-option HTML previews ONLY live at `.agents/studio/design-preview.html` during Phase 1 of `/revamp-ui`.
+   - The moment an archetype is chosen (or if production UI routes like `src/app/page.tsx` already exist), you MUST run `omni lock-ui "<Archetype>"` to archive and delete the static preview.
+   - NEVER maintain both a static HTML file and production framework components simultaneously.
+   - After any UI code change in `src/` or `apps/`, explicitly navigate the Antigravity Browser Agent to the live dev server route (e.g., `http://localhost:3000/` or `:4000/`) and verify the active URL matches the running app before reporting completion.
+4. **Zero-Fault Verification**: Run `omni checkpoint "<task>"` before edits and `./scripts/verify.sh` after edits.
