@@ -48,13 +48,13 @@ const DIRECTIONS: DirectionMeta[] = [
   {
     id: "3",
     badge: "DIRECTION 03",
-    name: "Horizon Noir & Penthouse HUD",
-    subtitle: "Ultra-Luxury Dark Obsidian & Spatial Telemetry",
-    inspiration: "Inspired by Volta Skai, Mr. C Residences & Air Center",
+    name: "Horizon Noir & Penthouse Suite",
+    subtitle: "Ultra-Luxury Dark Theme & Interactive Floor Plans",
+    inspiration: "Inspired by Volta Skai & Mr. C Residences",
     features: [
       "Dynamic Golden / Dusk / Midnight Lighting",
       "Delivery Dates & Yield Analytics",
-      "Private Off-Market Trophy Reserve",
+      "Exclusive Off-Market Listings",
       "Law 230/1996 & Freehold Deed Vetting",
     ],
   },

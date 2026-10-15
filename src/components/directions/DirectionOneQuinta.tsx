@@ -151,7 +151,7 @@ export default function DirectionOneQuinta() {
     },
   ];
 
-  // 5 Curated Property Typologies for the Split-Screen Scroll
+  // 5 Curated Property Types for the Split-Screen Scroll
   const offerings = [
     {
       num: "I",
@@ -182,7 +182,7 @@ export default function DirectionOneQuinta() {
       title: "Prime Freehold Land Reserves",
       tag: "STRATEGIC CAPITAL & PRIVATE BUILD",
       desc: "Freehold and fully zoned plots in prime expansion corridors of Somabay, Sahl Hasheesh, and Hurghada Waterfront with verified municipal utility connections and approved build envelopes.",
-      meta: "Verified Freehold · Zoned Residential/Boutique Hospitality · Sovereign Title",
+      meta: "Verified Freehold · Zoned Residential/Boutique Hospitality · Clear Title Deeds",
       img: "/img-private-island.jpg",
     },
     {
@@ -243,7 +243,7 @@ export default function DirectionOneQuinta() {
               href="#dossier"
               className="hidden sm:inline-flex px-5 py-2 rounded-full bg-[#C0673F] hover:bg-[#A8552F] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-lg shadow-[#C0673F]/30"
             >
-              Private Portfolio
+              Contact Us
             </a>
 
             {/* Fullscreen Hidden Drawer Menu Trigger (Lenval Style) */}
@@ -290,29 +290,48 @@ export default function DirectionOneQuinta() {
             {/* Massive Typographic Navigation Links */}
             <div className="my-auto max-w-4xl space-y-6 sm:space-y-8">
               {[
-                { name: "01 / The Arrival (Riviera Overview)", href: "#hero" },
-                { name: "02 / The Coastal Corridors (El Gouna · Sahl Hasheesh · Soma Bay)", href: "#destinations" },
-                { name: "03 / Property Typologies (Villas · Penthouses · Developer Off-Plan)", href: "#portfolio" },
-                { name: "04 / Legal Framework & Foreign Ownership (Law 230/1996)", href: "#philosophy" },
-                { name: "05 / Request Private Acquisition Portfolio & VIP Tour", href: "#dossier" },
+                { num: "01", name: "Home", sub: "Red Sea Coastline Overview", href: "#hero" },
+                { num: "02", name: "Destinations", sub: "Hurghada · El Gouna · Sahl Hasheesh · Soma Bay · Makadi Bay", href: "#destinations" },
+                { num: "03", name: "Properties for Sale", sub: "Villas · Apartments · Penthouses · Land · Off-Plan", href: "#portfolio" },
+                { num: "04", name: "Why Datcha & Legal Guide", sub: "Foreign Ownership (Law 230/1996) & Freehold Title Deeds", href: "#philosophy" },
+                { num: "05", name: "Contact & VIP Viewing Trip", sub: "Schedule a Consultation or 3-Day Hosted Tour", href: "#dossier" },
               ].map((link, idx) => (
-                <div key={idx} className="group">
+                <div key={idx} className="group border-b border-white/5 pb-4">
                   <a
                     href={link.href}
                     onClick={() => setFullscreenMenuOpen(false)}
-                    className="text-2xl sm:text-5xl font-serif font-light tracking-tight hover:text-[#C0673F] transition-colors flex items-center justify-between"
+                    className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 group-hover:translate-x-2 transition-transform"
                   >
-                    <span>{link.name}</span>
-                    <ArrowRight className="w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity text-[#C0673F]" />
+                    <div className="flex items-baseline gap-4">
+                      <span className="font-mono text-xs text-[#C0673F] tracking-widest">{link.num}</span>
+                      <span className="text-2xl sm:text-5xl font-serif font-light tracking-tight group-hover:text-[#C0673F] transition-colors">{link.name}</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs sm:text-sm text-[#8A8F93] font-light">{link.sub}</span>
+                      <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-[#C0673F] hidden sm:block" />
+                    </div>
                   </a>
                 </div>
               ))}
             </div>
 
-            {/* Bottom Footer Info */}
-            <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-[#8A8F93] font-mono gap-4">
-              <span>HURGHADA · EL GOUNA · SAHL HASHEESH · SOMA BAY · MAKADI BAY</span>
-              <span>DATCHAREALESTATE.COM · ALL RIGHTS RESERVED 2026</span>
+            {/* Bottom Footer Info with Direct Contact */}
+            <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between text-xs text-[#8A8F93] font-mono gap-4">
+              <div className="flex flex-wrap items-center gap-6 text-[#DCC7B1]">
+                <a href="tel:+201234567990" className="inline-flex items-center gap-2 hover:text-[#C0673F] transition-colors">
+                  <Phone className="w-3.5 h-3.5 text-[#C0673F]" />
+                  <span>+20 123 456 7990</span>
+                </a>
+                <a href="https://wa.me/201234567990" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 hover:text-[#25D366] transition-colors">
+                  <MessageCircle className="w-3.5 h-3.5 text-[#25D366]" />
+                  <span>WhatsApp Concierge</span>
+                </a>
+                <a href="mailto:concierge@datcharealestate.com" className="inline-flex items-center gap-2 hover:text-[#C0673F] transition-colors">
+                  <Mail className="w-3.5 h-3.5 text-[#C0673F]" />
+                  <span>concierge@datcharealestate.com</span>
+                </a>
+              </div>
+              <span>HURGHADA · EL GOUNA · SAHL HASHEESH · SOMA BAY</span>
             </div>
           </motion.div>
         )}
@@ -347,7 +366,7 @@ export default function DirectionOneQuinta() {
             className="inline-flex items-center gap-2.5 text-[11px] sm:text-xs font-mono uppercase tracking-[0.25em] text-[#C0673F] mb-6 px-5 py-2 rounded-full bg-black/70 border border-[#C0673F]/40 backdrop-blur-xl"
           >
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Red Sea Coastal Architectural Curation</span>
+            <span>Red Sea Luxury Real Estate & Investments</span>
           </motion.div>
 
           <motion.h1
@@ -368,7 +387,7 @@ export default function DirectionOneQuinta() {
             transition={{ delay: 0.4, duration: 0.9 }}
             className="max-w-2xl mx-auto text-base sm:text-xl text-[#DCC7B1]/90 font-light mb-10 tracking-wide leading-relaxed"
           >
-            Homes. Investments. A Brighter Tomorrow. Curating verified land tenure, waterfront residences, and prime commercial acquisitions across Egypt&apos;s most coveted coastal sanctuaries.
+            Homes. Investments. A Brighter Tomorrow. Helping you find and secure premier waterfront villas, luxury apartments, and prime investment properties along Egypt&apos;s Red Sea coast.
           </motion.p>
 
           <motion.div
@@ -381,14 +400,14 @@ export default function DirectionOneQuinta() {
               href="#destinations"
               className="w-full sm:w-auto px-8 py-4 bg-[#C0673F] hover:bg-[#A8552F] text-white text-xs font-bold uppercase tracking-widest rounded-full shadow-2xl shadow-[#C0673F]/40 transition-all hover:scale-105 flex items-center justify-center gap-3"
             >
-              <span>Explore The Corridors</span>
+              <span>Explore Destinations</span>
               <ArrowRight className="w-4 h-4" />
             </a>
             <a
               href="#dossier"
               className="w-full sm:w-auto px-8 py-4 border border-white/20 hover:border-[#C0673F] text-[#F7F3ED] text-xs font-bold uppercase tracking-widest rounded-full backdrop-blur-md hover:bg-white/5 transition-all"
             >
-              Request Acquisition Portfolio
+              Contact Our Advisors
             </a>
           </motion.div>
         </div>
@@ -429,43 +448,43 @@ export default function DirectionOneQuinta() {
       </div>
 
       {/* ═══════════════════════════════════════════════════════════════
-          SECTION 2: ULTRA-MINIMALIST EDITORIAL STATEMENTS (LENVAL STYLE)
+          SECTION 2: ABOUT DATCHA REAL ESTATE
       ═══════════════════════════════════════════════════════════════ */}
       <section className="py-28 px-6 sm:px-12 max-w-6xl mx-auto">
         <div className="text-xs font-mono text-[#C0673F] uppercase tracking-[0.25em] mb-8 flex items-center gap-3">
           <span className="w-6 h-[1px] bg-[#C0673F]" />
-          <span>Curatorial Manifesto</span>
+          <span>About Datcha Real Estate</span>
         </div>
 
         <h2 className="text-3xl sm:text-6xl md:text-7xl font-light font-serif tracking-tight leading-[1.08] mb-12" style={{ color: "var(--t-text)" }}>
-          We do not subscribe to high-volume brokerage. We curate <span className="italic text-[#C0673F]">enduring landmarks</span> shaped by architectural integrity and pristine Red Sea waters.
+          We don&apos;t just sell property. We connect discerning buyers with <span className="italic text-[#C0673F]">exceptional coastal homes</span> and sound investments along the Red Sea.
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 pt-12 border-t text-sm leading-relaxed" style={{ borderColor: "var(--t-border)", color: "var(--t-text-muted)" }}>
           <div>
-            <span className="text-2xl font-serif text-[#C0673F] block mb-3">01 / The Land</span>
-            <p className="font-light leading-relaxed">Identifying exceptional beachfront parcels and elevated plateau plots with guaranteed zoning rights, clear sovereign titles, and enduring capital relevance.</p>
+            <span className="text-2xl font-serif text-[#C0673F] block mb-3">01 / Prime Locations</span>
+            <p className="font-light leading-relaxed">Direct access to prime beachfront and lagoon plots in El Gouna, Sahl Hasheesh, and Somabay with clear legal status and high appreciation potential.</p>
           </div>
           <div>
-            <span className="text-2xl font-serif text-[#C0673F] block mb-3">02 / The Narrative</span>
-            <p className="font-light leading-relaxed">Every residence we represent is audited for architectural coherence, unobstructed sea views, and private resort amenities that ensure superior rental and resale liquidity.</p>
+            <span className="text-2xl font-serif text-[#C0673F] block mb-3">02 / Quality Properties</span>
+            <p className="font-light leading-relaxed">Every villa, apartment, and penthouse is carefully selected for build quality, unobstructed views, and strong rental return or resale value.</p>
           </div>
           <div>
-            <span className="text-2xl font-serif text-[#C0673F] block mb-3">03 / The Protection</span>
-            <p className="font-light leading-relaxed">Our bilingual in-house legal counsel manages title registration, municipal filings, and escrow terms to provide total contractual certainty for international investors.</p>
+            <span className="text-2xl font-serif text-[#C0673F] block mb-3">03 / Full Legal Support</span>
+            <p className="font-light leading-relaxed">Our bilingual legal team assists with Egyptian Law 230/1996 compliance, title deed registration, and contract review for complete peace of mind.</p>
           </div>
         </div>
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          SECTION 3: HORIZONTAL PINNED SLIDER (QUINTA DA MALIA SIGNATURE)
+          SECTION 3: HORIZONTAL PINNED SLIDER (FEATURED DESTINATIONS)
       ═══════════════════════════════════════════════════════════════ */}
       <section id="destinations" className="py-24 border-t" style={{ backgroundColor: "var(--t-bg-alt)", borderColor: "var(--t-border)" }}>
         <div className="px-6 sm:px-12 max-w-7xl mx-auto mb-10 flex items-end justify-between">
           <div>
-            <span className="text-xs font-mono uppercase tracking-[0.25em] text-[#C0673F] block mb-2">Regional Corridors</span>
+            <span className="text-xs font-mono uppercase tracking-[0.25em] text-[#C0673F] block mb-2">Featured Destinations</span>
             <h2 className="text-3xl sm:text-6xl font-light font-serif" style={{ color: "var(--t-text)" }}>
-              The Coastal <em>Collection.</em>
+              Explore Egypt&apos;s <em>Red Sea Riviera.</em>
             </h2>
           </div>
 
@@ -544,7 +563,7 @@ export default function DirectionOneQuinta() {
                     className="inline-flex items-center gap-1.5 hover:text-[#C0673F] transition-colors font-sans uppercase font-bold text-[11px]"
                     style={{ color: "var(--t-text)" }}
                   >
-                    <span>Inquire</span>
+                    <span>View Properties</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </a>
                 </div>
@@ -562,16 +581,16 @@ export default function DirectionOneQuinta() {
       </div>
 
       {/* ═══════════════════════════════════════════════════════════════
-          SECTION 4: SPLIT-SCREEN STICKY STORYTELLING (LENVAL / MR. C STYLE)
+          SECTION 4: PROPERTIES BY CATEGORY
       ═══════════════════════════════════════════════════════════════ */}
       <section id="portfolio" className="py-28 px-6 sm:px-12 max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <span className="text-xs font-mono uppercase tracking-[0.25em] text-[#C0673F] block mb-3">Portfolio Curation</span>
+          <span className="text-xs font-mono uppercase tracking-[0.25em] text-[#C0673F] block mb-3">Featured Properties</span>
           <h2 className="text-3xl sm:text-6xl font-light font-serif mb-4" style={{ color: "var(--t-text)" }}>
-            Five Core Property <em>Typologies.</em>
+            Explore By Property <em>Type.</em>
           </h2>
           <p className="text-sm font-light leading-relaxed" style={{ color: "var(--t-text-muted)" }}>
-            Strictly vetted against legal encumbrances, construction licenses, and capital exit horizons. We represent audited assets, never unverified feeds.
+            Carefully vetted for legal ownership, building licenses, and strong investment value. From luxury waterfront villas to flexible developer payment plans.
           </p>
         </div>
 
@@ -601,7 +620,7 @@ export default function DirectionOneQuinta() {
                       {isActive && <span className="w-2 h-2 rounded-full bg-[#C0673F] animate-ping" />}
                       {item.tag}
                     </span>
-                    <span className="text-lg font-serif font-light" style={{ color: "var(--t-text-muted)" }}>TYPOLOGY {item.num}</span>
+                    <span className="text-lg font-serif font-light" style={{ color: "var(--t-text-muted)" }}>CATEGORY {item.num}</span>
                   </div>
                   <h3 className="text-2xl font-serif font-light mb-3" style={{ color: "var(--t-text)" }}>
                     {item.title}
@@ -610,7 +629,7 @@ export default function DirectionOneQuinta() {
                   <div className="text-[11px] font-mono pt-3 border-t flex items-center justify-between" style={{ borderColor: "var(--t-border)", color: "var(--t-text-sub)" }}>
                     <span>{item.meta}</span>
                     <span className="text-xs text-[#C0673F] opacity-0 group-hover:opacity-100 transition-opacity">
-                      Glide to View →
+                      View Details →
                     </span>
                   </div>
                 </div>
@@ -641,7 +660,7 @@ export default function DirectionOneQuinta() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/30" />
                 <div className="absolute top-8 right-8 px-4 py-2 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-xs font-mono text-[#DCC7B1]">
-                  AUDITED TYPOLOGY {offerings[activeStorySlide].num}
+                  FEATURED PROPERTY TYPE {offerings[activeStorySlide].num}
                 </div>
                 <div className="absolute bottom-10 left-10 right-10 text-white">
                   <span className="text-xs font-mono uppercase tracking-widest text-[#C0673F] block mb-1">
@@ -652,7 +671,7 @@ export default function DirectionOneQuinta() {
                     href="#dossier"
                     className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#DCC7B1] hover:text-[#C0673F] transition-colors mt-2"
                   >
-                    <span>Request Acquisition Portfolio</span>
+                    <span>Inquire About This Property</span>
                     <ArrowRight className="w-4 h-4" />
                   </a>
                 </div>
@@ -663,16 +682,16 @@ export default function DirectionOneQuinta() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          SECTION 5: INSTITUTIONAL TRUST & EGYPTIAN LEGAL GOVERNANCE
+          SECTION 5: WHY CHOOSE DATCHA & LEGAL CERTAINTY
       ═══════════════════════════════════════════════════════════════ */}
       <section id="philosophy" className="py-24 px-6 sm:px-12 border-t" style={{ backgroundColor: "var(--t-bg-alt)", borderColor: "var(--t-border)" }}>
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center mb-24">
             <div className="lg:col-span-5">
-              <span className="text-xs font-mono uppercase tracking-[0.25em] text-[#C0673F] block mb-3">Institutional Governance</span>
+              <span className="text-xs font-mono uppercase tracking-[0.25em] text-[#C0673F] block mb-3">Why Choose Datcha</span>
               <h2 className="text-3xl sm:text-6xl font-light font-serif mb-6 leading-tight" style={{ color: "var(--t-text)" }}>
-                Legal Certainty. <br />
-                <span className="italic text-[#C0673F]">Enduring Capital.</span>
+                Safe Investments. <br />
+                <span className="italic text-[#C0673F]">Legal Certainty.</span>
               </h2>
               <p className="text-sm leading-relaxed font-light mb-8" style={{ color: "var(--t-text-muted)" }}>
                 Purchasing luxury coastal property in Egypt requires absolute title clarity, statutory foreign ownership compliance, and trusted local escrow. We represent clients from contract vetting to final deed registration.
@@ -758,17 +777,17 @@ export default function DirectionOneQuinta() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          SECTION 6: PRIVATE CLIENT ADVISORY & VIP DISCOVERY TOUR
+          SECTION 6: CONTACT & VIP DISCOVERY TOUR
       ═══════════════════════════════════════════════════════════════ */}
       <section id="dossier" className="py-28 px-6 sm:px-12 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           <div className="lg:col-span-5">
-            <span className="text-xs font-mono uppercase tracking-[0.25em] text-[#C0673F] block mb-3">Private Client Advisory Desk</span>
+            <span className="text-xs font-mono uppercase tracking-[0.25em] text-[#C0673F] block mb-3">Get In Touch</span>
             <h2 className="text-3xl sm:text-6xl font-light font-serif mb-6 leading-tight" style={{ color: "var(--t-text)" }}>
-              Request Your <em>Portfolio.</em>
+              Find Your Dream <em>Property.</em>
             </h2>
             <p className="text-sm font-light leading-relaxed mb-8" style={{ color: "var(--t-text-muted)" }}>
-              Whether you seek a beachfront estate, an off-plan development with 5–7 year installments, or prime land reserves, our senior partners assemble a curated, legally audited portfolio tailored to your goals.
+              Whether you are looking for a holiday home, a permanent residence, or a high-yield investment along the Red Sea, our team will guide you every step of the way.
             </p>
 
             {/* VIP Discovery Tour High-Intent Card */}
@@ -781,11 +800,11 @@ export default function DirectionOneQuinta() {
             >
               <div className="flex items-center gap-2 font-mono text-[10px] tracking-widest uppercase font-bold mb-2 text-[#C0673F]">
                 <Sparkles className="w-3.5 h-3.5" />
-                VIP CLIENT CONCIERGE SERVICE
+                COMPLIMENTARY VIP SERVICE
               </div>
-              <h4 className="font-serif text-lg mb-2" style={{ color: "var(--t-text)" }}>Hosted 3-Day Red Sea Discovery Tour</h4>
+              <h4 className="font-serif text-lg mb-2" style={{ color: "var(--t-text)" }}>Complimentary 3-Day Property Viewing Trip</h4>
               <p className="text-xs leading-relaxed font-light mb-4" style={{ color: "var(--t-text-sub)" }}>
-                Complimentary private airport transfer, curated property inspections across El Gouna, Sahl Hasheesh, and Soma Bay, and in-person consultation with senior legal counsel.
+                Airport pick-up, private chauffeur, curated visits to top developments in El Gouna, Sahl Hasheesh, and Somabay, plus consultation with our legal advisor.
               </p>
               <a
                 href="https://wa.me/201234567990?text=Hello%20Datcha,%20I%20would%20like%20to%20inquire%20about%20booking%20a%20VIP%20Discovery%20Tour."
@@ -793,7 +812,7 @@ export default function DirectionOneQuinta() {
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 text-xs font-mono text-[#C0673F] hover:underline uppercase tracking-wider font-semibold"
               >
-                Inquire About Discovery Tour Dates →
+                Book Your Viewing Trip →
               </a>
             </div>
 
@@ -836,9 +855,9 @@ export default function DirectionOneQuinta() {
                   <div className="w-16 h-16 rounded-full bg-[#C0673F]/20 border border-[#C0673F] flex items-center justify-center text-[#C0673F] mx-auto mb-6">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
-                  <h3 className="text-3xl font-light font-serif mb-3" style={{ color: "var(--t-text)" }}>Portfolio Request Received</h3>
+                  <h3 className="text-3xl font-light font-serif mb-3" style={{ color: "var(--t-text)" }}>Inquiry Received</h3>
                   <p className="text-sm max-w-md mx-auto font-light leading-relaxed" style={{ color: "var(--t-text-muted)" }}>
-                    Your criteria have been assigned to our managing partner. An encrypted acquisition portfolio will be delivered to your registered contact within 24 hours.
+                    Thank you for reaching out. One of our property advisors will get in touch with you within 24 hours.
                   </p>
                 </div>
               ) : (
@@ -846,7 +865,7 @@ export default function DirectionOneQuinta() {
                   {/* Asset Selection Chips */}
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider mb-3" style={{ color: "var(--t-text)" }}>
-                      1. Target Property Typology
+                      1. Property Type
                     </label>
                     <div className="flex flex-wrap gap-2">
                       {["Beachfront & Lagoon Villas", "Sea-View Penthouses", "Primary Off-Plan (5-7 Yr Installments)", "Freehold Land Reserves", "Commercial Promenade"].map((asset) => (
@@ -869,7 +888,7 @@ export default function DirectionOneQuinta() {
                   {/* Horizon Selection Chips */}
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider mb-3" style={{ color: "var(--t-text)" }}>
-                      2. Investment Intent & Horizon
+                      2. Purpose of Purchase
                     </label>
                     <div className="flex flex-wrap gap-2">
                       {["Private Family Residence", "Capital Growth (3-5 Years)", "Immediate Rental Yield", "Commercial Enterprise"].map((hor) => (
@@ -937,7 +956,7 @@ export default function DirectionOneQuinta() {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "var(--t-text)" }}>Advisory Language</label>
+                      <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "var(--t-text)" }}>Preferred Language</label>
                       <select
                         className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none border focus:border-[#C0673F] transition-all"
                         style={{
@@ -955,10 +974,10 @@ export default function DirectionOneQuinta() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "var(--t-text)" }}>Specific Criteria & Budget</label>
+                    <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "var(--t-text)" }}>Property Requirements & Budget</label>
                     <textarea
                       rows={3}
-                      placeholder="Please specify target budget, preferred square meters, or specific waterfront criteria..."
+                      placeholder="Please specify target budget, preferred location (El Gouna, Sahl Hasheesh, etc.), or specific waterfront requirements..."
                       className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none border focus:border-[#C0673F] transition-all resize-none"
                       style={{
                         backgroundColor: "var(--t-input-bg)",
@@ -972,7 +991,7 @@ export default function DirectionOneQuinta() {
                     type="submit"
                     className="w-full py-4 bg-[#C0673F] hover:bg-[#A8552F] text-white text-xs font-bold uppercase tracking-widest rounded-full transition-all shadow-xl shadow-[#C0673F]/35 hover:scale-[1.01]"
                   >
-                    Commission Confidential Dossier →
+                    Send Inquiry →
                   </button>
                 </form>
               )}
@@ -989,11 +1008,11 @@ export default function DirectionOneQuinta() {
           </div>
 
           <div className="flex flex-wrap justify-center gap-8 text-xs uppercase tracking-[0.2em] text-[#8A8F93]">
-            <a href="#hero" className="hover:text-[#C0673F] transition-colors">Arrival</a>
-            <a href="#destinations" className="hover:text-[#C0673F] transition-colors">Corridors</a>
-            <a href="#portfolio" className="hover:text-[#C0673F] transition-colors">Portfolio</a>
-            <a href="#philosophy" className="hover:text-[#C0673F] transition-colors">Philosophy</a>
-            <a href="#dossier" className="hover:text-[#C0673F] transition-colors">Dossier</a>
+            <a href="#hero" className="hover:text-[#C0673F] transition-colors">Home</a>
+            <a href="#destinations" className="hover:text-[#C0673F] transition-colors">Destinations</a>
+            <a href="#portfolio" className="hover:text-[#C0673F] transition-colors">Properties</a>
+            <a href="#philosophy" className="hover:text-[#C0673F] transition-colors">Why Datcha</a>
+            <a href="#dossier" className="hover:text-[#C0673F] transition-colors">Contact</a>
           </div>
 
           <div className="text-center md:text-right text-xs text-[#8A8F93] font-mono">

@@ -91,7 +91,7 @@ export default function DirectionTwoAtelier() {
           {/* Desktop Links */}
           <div className="hidden lg:flex items-center gap-7 text-xs uppercase tracking-widest font-semibold" style={{ color: "var(--t-text-muted)" }}>
             <a href="#destinations" className="hover:text-[#C0673F] transition-colors">Destinations</a>
-            <a href="#offerings" className="hover:text-[#C0673F] transition-colors">Portfolio</a>
+            <a href="#offerings" className="hover:text-[#C0673F] transition-colors">Properties</a>
             <a href="#why-us" className="hover:text-[#C0673F] transition-colors">Why Datcha</a>
             <a href="#testimonials" className="hover:text-[#C0673F] transition-colors">Testimonials</a>
             <a href="#contact" className="hover:text-[#C0673F] transition-colors">Contact</a>
@@ -183,7 +183,7 @@ export default function DirectionTwoAtelier() {
               onClick={() => setMobileMenuOpen(false)}
               className="text-sm font-semibold uppercase tracking-wider py-2 border-b border-white/5"
             >
-              Portfolio
+              Properties
             </a>
             <a
               href="#why-us"
@@ -337,7 +337,7 @@ export default function DirectionTwoAtelier() {
               <div className="absolute inset-0 bg-gradient-to-t from-[#1F2A2E]/85 via-black/20 to-transparent pointer-events-none" />
               <div className="relative z-10 w-full p-6 sm:p-8 rounded-2xl backdrop-blur-xl bg-black/40 border border-white/15 text-white shadow-2xl">
                 <p className="text-xs font-bold text-[#C0673F] uppercase tracking-wider mb-1">
-                  Featured Coastal Corridor
+                  Featured Coastal Destination
                 </p>
                 <p className="text-xl font-serif font-bold">El Gouna & Sahl Hasheesh Coast</p>
                 <p className="text-xs text-[#DCC7B1] mt-1 font-light">
@@ -494,13 +494,13 @@ export default function DirectionTwoAtelier() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-3xl mx-auto mb-16 px-2">
             <span className="text-[#C0673F] text-xs font-bold uppercase tracking-[0.2em] block mb-2">
-              Portfolio Representation
+              Featured Properties
             </span>
             <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-serif mb-4" style={{ color: "var(--t-text)" }}>
-              Five Core Asset Classes.
+              Explore By Property Type.
             </h2>
             <p className="text-sm leading-relaxed" style={{ color: "var(--t-text-muted)" }}>
-              Every asset is audited by our legal counsel for verified land tenure, clean ownership chains, and superior capital growth potential.
+              Every property is audited by our legal counsel for verified land tenure, clean ownership chains, and superior capital growth potential.
             </p>
           </div>
 
@@ -509,7 +509,7 @@ export default function DirectionTwoAtelier() {
               {
                 icon: Landmark,
                 title: "Prime Land Plots",
-                tag: "Strategic Acquisition",
+                tag: "Prime Investment",
                 badge: "Direct Freehold Title",
                 desc: "Freehold and zoned plots in prime expansion corridors of Hurghada, Sahl Hasheesh, and Soma Bay with verified construction rights.",
                 img: "/img-private-island.jpg",
@@ -600,7 +600,7 @@ export default function DirectionTwoAtelier() {
                       className="mt-6 pt-3 border-t inline-flex items-center justify-between text-xs font-bold text-[#C0673F] hover:text-[#A8552F]"
                       style={{ borderColor: "var(--t-border)" }}
                     >
-                      <span>Inquire Asset</span>
+                      <span>Inquire Now</span>
                       <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
                     </a>
                   </div>
@@ -769,13 +769,13 @@ export default function DirectionTwoAtelier() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
             <div className="lg:col-span-5 px-2">
               <span className="text-[#C0673F] text-xs font-bold uppercase tracking-[0.2em] block mb-2">
-                Initiate Conversation
+                Get In Touch
               </span>
               <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-serif mb-6" style={{ color: "var(--t-text)" }}>
-                Begin Your Red Sea Acquisition.
+                Find Your Red Sea Home.
               </h2>
               <p className="text-sm leading-relaxed mb-8" style={{ color: "var(--t-text-muted)" }}>
-                Whether you seek an executive plot, vacation penthouse, or corporate retail footprint, our senior brokers will curate tailored dossiers aligned with your financial horizons.
+                Whether you seek a beachfront villa, vacation penthouse, or investment plot, our experienced team will assist you with verified properties and clear legal guidance.
               </p>
 
               <div className="space-y-4 text-xs font-medium" style={{ color: "var(--t-text)" }}>
@@ -862,7 +862,7 @@ export default function DirectionTwoAtelier() {
                       Inquiry Received
                     </h3>
                     <p className="text-sm max-w-md mx-auto" style={{ color: "var(--t-text-muted)" }}>
-                      Thank you. A dedicated multilingual portfolio director will review your specifications and contact you within 24 hours.
+                      Thank you. One of our property advisors will review your requirements and contact you within 24 hours.
                     </p>
                   </div>
                 ) : (
@@ -982,7 +982,7 @@ export default function DirectionTwoAtelier() {
 
                     <div>
                       <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "var(--t-text)" }}>
-                        Acquisition Horizon & Payment Model
+                        Preferred Timeline & Payment Plan
                       </label>
                       <select
                         className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-all"
@@ -994,15 +994,15 @@ export default function DirectionTwoAtelier() {
                       >
                         <option>Ready-to-Move / Immediate Handover (Cash or Resale)</option>
                         <option>Off-Plan / 5–7 Year Developer Installments @ 0% Interest</option>
-                        <option>Strategic Land / Development Plot (Freehold Title)</option>
-                        <option>Commercial Unit / Turnkey High-Yield Investment</option>
+                        <option>Land / Development Plot (Freehold Title)</option>
+                        <option>Commercial Unit / High-Yield Investment</option>
                         <option>Undecided / Request Advisory Consultation</option>
                       </select>
                     </div>
 
                     <div>
                       <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "var(--t-text)" }}>
-                        Message & Investment Requirements
+                        Message & Property Requirements
                       </label>
                       <textarea
                         rows={4}
@@ -1020,7 +1020,7 @@ export default function DirectionTwoAtelier() {
                       type="submit"
                       className="w-full py-4 bg-[#C0673F] hover:bg-[#A8552F] text-white text-xs font-bold uppercase tracking-widest rounded-full transition-all shadow-lg shadow-[#C0673F]/30 hover:scale-[1.01]"
                     >
-                      Submit Confidential Inquiry
+                      Send Inquiry →
                     </button>
                   </form>
                 )}
