@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { Sparkles, Layers, Check, ChevronDown, ChevronUp, Eye, EyeOff } from "lucide-react";
+import { Sparkles, Layers, Check, ChevronDown, ChevronUp, Eye, EyeOff, Sun, Moon } from "lucide-react";
 import DirectionOneQuinta from "@/components/directions/DirectionOneQuinta";
 import DirectionTwoAtelier from "@/components/directions/DirectionTwoAtelier";
 import DirectionThreeNoir from "@/components/directions/DirectionThreeNoir";
@@ -65,6 +65,7 @@ function DirectionSwitcherContent() {
   const [activeDirection, setActiveDirection] = useState<DirectionId>("1");
   const [panelOpen, setPanelOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState<"dark" | "light">("dark");
 
   // Initialize from URL or localStorage
   useEffect(() => {
@@ -77,6 +78,22 @@ function DirectionSwitcherContent() {
         setActiveDirection(saved as DirectionId);
       }
     }
+
+    const savedTheme = localStorage.getItem("datcha_theme") as "dark" | "light" | null;
+    if (savedTheme === "light" || savedTheme === "dark") {
+      setCurrentTheme(savedTheme);
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    } else {
+      const docTheme = document.documentElement.getAttribute("data-theme") as "dark" | "light" | null;
+      if (docTheme) setCurrentTheme(docTheme);
+    }
+
+    const handleSync = () => {
+      const t = (localStorage.getItem("datcha_theme") as "dark" | "light" | null) || "dark";
+      setCurrentTheme(t);
+    };
+    window.addEventListener("storage", handleSync);
+    return () => window.removeEventListener("storage", handleSync);
   }, [searchParams]);
 
   const selectDirection = (id: DirectionId) => {
@@ -85,6 +102,14 @@ function DirectionSwitcherContent() {
     const url = new URL(window.location.href);
     url.searchParams.set("direction", id);
     window.history.replaceState({}, "", url.toString());
+  };
+
+  const toggleGlobalTheme = () => {
+    const next = currentTheme === "dark" ? "light" : "dark";
+    setCurrentTheme(next);
+    localStorage.setItem("datcha_theme", next);
+    document.documentElement.setAttribute("data-theme", next);
+    window.dispatchEvent(new Event("storage"));
   };
 
   const currentMeta = DIRECTIONS.find((d) => d.id === activeDirection) || DIRECTIONS[0];
@@ -143,6 +168,25 @@ function DirectionSwitcherContent() {
                     </button>
                   );
                 })}
+
+                {/* Light / Dark Mode Toggle Button */}
+                <button
+                  onClick={toggleGlobalTheme}
+                  className="px-2.5 py-1.5 rounded-lg text-xs font-mono tracking-wider transition-all flex items-center gap-1 text-white/70 hover:text-white hover:bg-white/10 border border-white/10"
+                  title={`Toggle Light / Dark Mode (Currently ${currentTheme.toUpperCase()})`}
+                >
+                  {currentTheme === "dark" ? (
+                    <>
+                      <Sun className="w-3.5 h-3.5 text-[#E0A856]" />
+                      <span className="hidden sm:inline font-sans text-[11px]">Light</span>
+                    </>
+                  ) : (
+                    <>
+                      <Moon className="w-3.5 h-3.5 text-[#C0673F]" />
+                      <span className="hidden sm:inline font-sans text-[11px]">Dark</span>
+                    </>
+                  )}
+                </button>
 
                 {/* Details Accordion */}
                 <button

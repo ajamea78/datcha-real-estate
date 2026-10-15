@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -135,6 +135,11 @@ export default function DirectionThreeNoir() {
   const [vaultUnlocked, setVaultUnlocked] = useState(false);
   const [dossierSubmitted, setDossierSubmitted] = useState(false);
   const [activeTab, setActiveTab] = useState<"specs" | "investment">("specs");
+
+  // Direction 3 is the Noir Penthouse HUD — enforce dark theme on mount
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", "dark");
+  }, []);
 
   // Dynamic atmosphere backgrounds matching lighting simulator
   const atmosphereBackgrounds = {

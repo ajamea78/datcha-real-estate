@@ -42,13 +42,31 @@ export default function DirectionOneQuinta() {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const horizontalScrollRef = useRef<HTMLDivElement>(null);
 
-  // Sync data-theme on html root
+  // Initialize and sync data-theme on html root
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-  }, [theme]);
+    const saved = localStorage.getItem("datcha_theme");
+    if (saved === "light" || saved === "dark") {
+      setTheme(saved);
+      document.documentElement.setAttribute("data-theme", saved);
+    } else {
+      const current = document.documentElement.getAttribute("data-theme") as "dark" | "light" | null;
+      if (current) setTheme(current);
+    }
+
+    const handleSync = () => {
+      const t = (localStorage.getItem("datcha_theme") as "dark" | "light" | null) || "dark";
+      setTheme(t);
+    };
+    window.addEventListener("storage", handleSync);
+    return () => window.removeEventListener("storage", handleSync);
+  }, []);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+    const next = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+    localStorage.setItem("datcha_theme", next);
+    document.documentElement.setAttribute("data-theme", next);
+    window.dispatchEvent(new Event("storage"));
   };
 
   const scrollHorizontal = (direction: "left" | "right") => {
@@ -200,11 +218,21 @@ export default function DirectionOneQuinta() {
           </a>
 
           {/* Minimal Controls Capsule */}
-          <div className="flex items-center gap-3 bg-black/40 backdrop-blur-2xl p-1.5 rounded-full border border-white/15 shadow-2xl">
+          <div
+            className="flex items-center gap-3 backdrop-blur-2xl p-1.5 rounded-full border shadow-2xl transition-colors duration-300"
+            style={{
+              backgroundColor: "var(--t-nav-bg)",
+              borderColor: "var(--t-border)",
+            }}
+          >
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="w-9 h-9 rounded-full flex items-center justify-center text-[#DCC7B1] hover:text-white hover:bg-white/10 transition-all"
+              className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-105"
+              style={{
+                backgroundColor: "var(--t-surface)",
+                color: "var(--t-text)",
+              }}
               title="Toggle Light / Dark Mode"
             >
               {theme === "dark" ? <Sun className="w-4 h-4 text-[#C0673F]" /> : <Moon className="w-4 h-4 text-[#C0673F]" />}
@@ -221,7 +249,11 @@ export default function DirectionOneQuinta() {
             {/* Fullscreen Hidden Drawer Menu Trigger (Lenval Style) */}
             <button
               onClick={() => setFullscreenMenuOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-[#F7F3ED] text-xs font-bold uppercase tracking-widest transition-all"
+              className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all hover:opacity-90"
+              style={{
+                backgroundColor: "var(--t-surface)",
+                color: "var(--t-text)",
+              }}
             >
               <Menu className="w-4 h-4" />
               <span>Menu</span>
@@ -409,18 +441,18 @@ export default function DirectionOneQuinta() {
           We do not subscribe to high-volume brokerage. We curate <span className="italic text-[#C0673F]">enduring landmarks</span> shaped by architectural integrity and pristine Red Sea waters.
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 pt-12 border-t border-white/10 text-sm leading-relaxed" style={{ color: "var(--t-text-muted)" }}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 pt-12 border-t text-sm leading-relaxed" style={{ borderColor: "var(--t-border)", color: "var(--t-text-muted)" }}>
           <div>
             <span className="text-2xl font-serif text-[#C0673F] block mb-3">01 / The Land</span>
-            <p className="font-light">Identifying exceptional beachfront parcels and elevated plateau plots with guaranteed zoning rights, clear sovereign titles, and enduring capital relevance.</p>
+            <p className="font-light leading-relaxed">Identifying exceptional beachfront parcels and elevated plateau plots with guaranteed zoning rights, clear sovereign titles, and enduring capital relevance.</p>
           </div>
           <div>
             <span className="text-2xl font-serif text-[#C0673F] block mb-3">02 / The Narrative</span>
-            <p className="font-light">Every residence we represent is audited for architectural coherence, unobstructed sea views, and private resort amenities that ensure superior rental and resale liquidity.</p>
+            <p className="font-light leading-relaxed">Every residence we represent is audited for architectural coherence, unobstructed sea views, and private resort amenities that ensure superior rental and resale liquidity.</p>
           </div>
           <div>
             <span className="text-2xl font-serif text-[#C0673F] block mb-3">03 / The Protection</span>
-            <p className="font-light">Our bilingual in-house legal counsel manages title registration, municipal filings, and escrow terms to provide total contractual certainty for international investors.</p>
+            <p className="font-light leading-relaxed">Our bilingual in-house legal counsel manages title registration, municipal filings, and escrow terms to provide total contractual certainty for international investors.</p>
           </div>
         </div>
       </section>
@@ -441,14 +473,24 @@ export default function DirectionOneQuinta() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => scrollHorizontal("left")}
-              className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#C0673F] transition-all"
+              className="w-12 h-12 rounded-full border flex items-center justify-center transition-all hover:bg-[#C0673F] hover:text-white hover:border-[#C0673F]"
+              style={{
+                borderColor: "var(--t-border)",
+                color: "var(--t-text)",
+                backgroundColor: "var(--t-card-bg)",
+              }}
               aria-label="Scroll left"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               onClick={() => scrollHorizontal("right")}
-              className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#C0673F] transition-all"
+              className="w-12 h-12 rounded-full border flex items-center justify-center transition-all hover:bg-[#C0673F] hover:text-white hover:border-[#C0673F]"
+              style={{
+                borderColor: "var(--t-border)",
+                color: "var(--t-text)",
+                backgroundColor: "var(--t-card-bg)",
+              }}
               aria-label="Scroll right"
             >
               <ChevronRight className="w-5 h-5" />
@@ -461,10 +503,14 @@ export default function DirectionOneQuinta() {
           ref={horizontalScrollRef}
           className="flex gap-8 overflow-x-auto px-6 sm:px-12 pb-12 pt-4 no-scrollbar scroll-smooth"
         >
-          {destinations.map((dest, idx) => (
+          {destinations.map((dest) => (
             <div
               key={dest.id}
-              className="flex-shrink-0 w-[340px] sm:w-[480px] rounded-[2.5rem] overflow-hidden border border-white/10 group bg-black/40 flex flex-col justify-between shadow-2xl"
+              className="flex-shrink-0 w-[340px] sm:w-[480px] rounded-[2.5rem] overflow-hidden border group flex flex-col justify-between shadow-2xl transition-all duration-300"
+              style={{
+                borderColor: "var(--t-border)",
+                backgroundColor: "var(--t-card-bg)",
+              }}
             >
               {/* Image Frame */}
               <div className="relative h-[340px] sm:h-[400px] overflow-hidden">
@@ -488,12 +534,16 @@ export default function DirectionOneQuinta() {
               </div>
 
               {/* Data Strip */}
-              <div className="p-8 flex flex-col justify-between flex-grow">
-                <p className="text-xs text-[#8A8F93] leading-relaxed mb-6 font-light">{dest.narrative}</p>
+              <div className="p-8 flex flex-col justify-between flex-grow" style={{ backgroundColor: "var(--t-card-bg)" }}>
+                <p className="text-xs leading-relaxed mb-6 font-light" style={{ color: "var(--t-text-muted)" }}>{dest.narrative}</p>
                 
-                <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono">
+                <div className="pt-4 border-t flex items-center justify-between text-xs font-mono" style={{ borderColor: "var(--t-border)" }}>
                   <span className="text-[#C0673F] font-bold">{dest.stat}</span>
-                  <a href="#dossier" className="inline-flex items-center gap-1.5 text-white hover:text-[#C0673F] transition-colors font-sans uppercase font-bold text-[11px]">
+                  <a
+                    href="#dossier"
+                    className="inline-flex items-center gap-1.5 hover:text-[#C0673F] transition-colors font-sans uppercase font-bold text-[11px]"
+                    style={{ color: "var(--t-text)" }}
+                  >
                     <span>Inquire</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </a>
@@ -520,7 +570,7 @@ export default function DirectionOneQuinta() {
           <h2 className="text-3xl sm:text-6xl font-light font-serif mb-4" style={{ color: "var(--t-text)" }}>
             Five Core Property <em>Typologies.</em>
           </h2>
-          <p className="text-sm font-light text-[#8A8F93] leading-relaxed">
+          <p className="text-sm font-light leading-relaxed" style={{ color: "var(--t-text-muted)" }}>
             Strictly vetted against legal encumbrances, construction licenses, and capital exit horizons. We represent audited assets, never unverified feeds.
           </p>
         </div>
@@ -538,22 +588,26 @@ export default function DirectionOneQuinta() {
                   onMouseEnter={() => setActiveStorySlide(idx)}
                   className={`p-8 rounded-[2rem] border transition-all duration-300 cursor-pointer ${
                     isActive
-                      ? "border-[#C0673F] bg-white/[0.08] shadow-2xl scale-[1.015] ring-1 ring-[#C0673F]/40"
-                      : "border-white/10 hover:border-white/30 bg-black/20 hover:bg-black/30"
+                      ? "border-[#C0673F] shadow-2xl scale-[1.015] ring-1 ring-[#C0673F]/40"
+                      : "hover:border-[#C0673F]/50"
                   }`}
+                  style={{
+                    backgroundColor: isActive ? "var(--t-card-hover)" : "var(--t-card-bg)",
+                    borderColor: isActive ? "#C0673F" : "var(--t-border)",
+                  }}
                 >
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-xs font-mono text-[#C0673F] font-bold flex items-center gap-2">
                       {isActive && <span className="w-2 h-2 rounded-full bg-[#C0673F] animate-ping" />}
                       {item.tag}
                     </span>
-                    <span className="text-lg font-serif font-light text-[#8A8F93]">TYPOLOGY {item.num}</span>
+                    <span className="text-lg font-serif font-light" style={{ color: "var(--t-text-muted)" }}>TYPOLOGY {item.num}</span>
                   </div>
                   <h3 className="text-2xl font-serif font-light mb-3" style={{ color: "var(--t-text)" }}>
                     {item.title}
                   </h3>
-                  <p className="text-xs leading-relaxed text-[#8A8F93] font-light mb-4">{item.desc}</p>
-                  <div className="text-[11px] font-mono text-[#DCC7B1] pt-3 border-t border-white/5 flex items-center justify-between">
+                  <p className="text-xs leading-relaxed font-light mb-4" style={{ color: "var(--t-text-muted)" }}>{item.desc}</p>
+                  <div className="text-[11px] font-mono pt-3 border-t flex items-center justify-between" style={{ borderColor: "var(--t-border)", color: "var(--t-text-sub)" }}>
                     <span>{item.meta}</span>
                     <span className="text-xs text-[#C0673F] opacity-0 group-hover:opacity-100 transition-opacity">
                       Glide to View →
@@ -565,7 +619,10 @@ export default function DirectionOneQuinta() {
           </div>
 
           {/* Right Column: Sticky Morphing Photography Plate */}
-          <div className="lg:col-span-6 sticky top-28 h-[550px] sm:h-[680px] rounded-[3rem] overflow-hidden border border-white/15 shadow-2xl">
+          <div
+            className="lg:col-span-6 sticky top-28 h-[550px] sm:h-[680px] rounded-[3rem] overflow-hidden border shadow-2xl"
+            style={{ borderColor: "var(--t-border)" }}
+          >
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeStorySlide}
@@ -617,10 +674,17 @@ export default function DirectionOneQuinta() {
                 Legal Certainty. <br />
                 <span className="italic text-[#C0673F]">Enduring Capital.</span>
               </h2>
-              <p className="text-sm text-[#8A8F93] leading-relaxed font-light mb-8">
+              <p className="text-sm leading-relaxed font-light mb-8" style={{ color: "var(--t-text-muted)" }}>
                 Purchasing luxury coastal property in Egypt requires absolute title clarity, statutory foreign ownership compliance, and trusted local escrow. We represent clients from contract vetting to final deed registration.
               </p>
-              <div className="p-6 rounded-2xl bg-white/5 border border-white/10 text-xs font-light text-[#DCC7B1] leading-relaxed">
+              <div
+                className="p-6 rounded-2xl border text-xs font-light leading-relaxed"
+                style={{
+                  backgroundColor: "var(--t-card-bg)",
+                  borderColor: "var(--t-border)",
+                  color: "var(--t-text-sub)",
+                }}
+              >
                 Client advisory conducted natively in <strong>English, Arabic, Russian, and German</strong>. No misinterpretations, complete contractual transparency.
               </div>
             </div>
@@ -632,10 +696,17 @@ export default function DirectionOneQuinta() {
                 { roman: "III", title: "Shahr El Akari Notarization", desc: "Comprehensive registration at the Egyptian Notary Public, court validity proceedings (Sehat W Nafaz), and escrow oversight." },
                 { roman: "IV", title: "Currency & Repatriation Security", desc: "Transparent purchase options in EUR, USD, GBP, or EGP installments with 100% unrestricted future capital repatriation." },
               ].map((item, idx) => (
-                <div key={idx} className="p-8 rounded-[2rem] border border-white/10 bg-black/30 hover:border-[#C0673F]/60 transition-all">
+                <div
+                  key={idx}
+                  className="p-8 rounded-[2rem] border hover:border-[#C0673F]/60 transition-all"
+                  style={{
+                    backgroundColor: "var(--t-card-bg)",
+                    borderColor: "var(--t-border)",
+                  }}
+                >
                   <span className="text-xs font-mono text-[#C0673F] font-bold block mb-3">PILLAR {item.roman}</span>
-                  <h3 className="text-xl font-serif font-light text-white mb-2">{item.title}</h3>
-                  <p className="text-xs text-[#8A8F93] font-light leading-relaxed">{item.desc}</p>
+                  <h3 className="text-xl font-serif font-light mb-2" style={{ color: "var(--t-text)" }}>{item.title}</h3>
+                  <p className="text-xs font-light leading-relaxed" style={{ color: "var(--t-text-muted)" }}>{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -663,15 +734,22 @@ export default function DirectionOneQuinta() {
                 deal: "Commercial Plot, Hurghada",
               },
             ].map((testi, idx) => (
-              <div key={idx} className="p-8 rounded-[2rem] border border-white/10 bg-black/20 flex flex-col justify-between">
+              <div
+                key={idx}
+                className="p-8 rounded-[2rem] border flex flex-col justify-between"
+                style={{
+                  backgroundColor: "var(--t-card-bg)",
+                  borderColor: "var(--t-border)",
+                }}
+              >
                 <div>
                   <div className="text-4xl font-serif text-[#C0673F] mb-4">“</div>
                   <p className="text-sm italic font-light leading-relaxed mb-6" style={{ color: "var(--t-text)" }}>{testi.quote}</p>
                 </div>
-                <div className="pt-4 border-t border-white/10">
-                  <div className="text-sm font-serif font-bold text-white">{testi.client}</div>
+                <div className="pt-4 border-t" style={{ borderColor: "var(--t-border)" }}>
+                  <div className="text-sm font-serif font-bold" style={{ color: "var(--t-text)" }}>{testi.client}</div>
                   <div className="text-xs text-[#C0673F]">{testi.deal}</div>
-                  <div className="text-[10px] font-mono text-[#8A8F93]">{testi.loc}</div>
+                  <div className="text-[10px] font-mono" style={{ color: "var(--t-text-muted)" }}>{testi.loc}</div>
                 </div>
               </div>
             ))}
@@ -689,31 +767,37 @@ export default function DirectionOneQuinta() {
             <h2 className="text-3xl sm:text-6xl font-light font-serif mb-6 leading-tight" style={{ color: "var(--t-text)" }}>
               Request Your <em>Portfolio.</em>
             </h2>
-            <p className="text-sm font-light text-[#8A8F93] leading-relaxed mb-8">
+            <p className="text-sm font-light leading-relaxed mb-8" style={{ color: "var(--t-text-muted)" }}>
               Whether you seek a beachfront estate, an off-plan development with 5–7 year installments, or prime land reserves, our senior partners assemble a curated, legally audited portfolio tailored to your goals.
             </p>
 
             {/* VIP Discovery Tour High-Intent Card */}
-            <div className="p-6 rounded-3xl bg-gradient-to-br from-[#C0673F]/20 via-black/40 to-black/60 border border-[#C0673F]/40 mb-8 shadow-xl">
-              <div className="flex items-center gap-2 text-[#D4AF37] font-mono text-[10px] tracking-widest uppercase font-bold mb-2">
+            <div
+              className="p-6 rounded-3xl border mb-8 shadow-xl transition-all"
+              style={{
+                backgroundColor: "var(--t-card-bg)",
+                borderColor: "var(--t-border-hi)",
+              }}
+            >
+              <div className="flex items-center gap-2 font-mono text-[10px] tracking-widest uppercase font-bold mb-2 text-[#C0673F]">
                 <Sparkles className="w-3.5 h-3.5" />
                 VIP CLIENT CONCIERGE SERVICE
               </div>
-              <h4 className="font-serif text-lg text-white mb-2">Hosted 3-Day Red Sea Discovery Tour</h4>
-              <p className="text-xs text-[#DCC7B1] leading-relaxed font-light mb-4">
+              <h4 className="font-serif text-lg mb-2" style={{ color: "var(--t-text)" }}>Hosted 3-Day Red Sea Discovery Tour</h4>
+              <p className="text-xs leading-relaxed font-light mb-4" style={{ color: "var(--t-text-sub)" }}>
                 Complimentary private airport transfer, curated property inspections across El Gouna, Sahl Hasheesh, and Soma Bay, and in-person consultation with senior legal counsel.
               </p>
               <a
                 href="https://wa.me/201234567990?text=Hello%20Datcha,%20I%20would%20like%20to%20inquire%20about%20booking%20a%20VIP%20Discovery%20Tour."
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 text-xs font-mono text-[#D4AF37] hover:underline uppercase tracking-wider font-semibold"
+                className="inline-flex items-center gap-2 text-xs font-mono text-[#C0673F] hover:underline uppercase tracking-wider font-semibold"
               >
                 Inquire About Discovery Tour Dates →
               </a>
             </div>
 
-            <div className="space-y-4 text-xs font-mono text-[#DCC7B1] mb-10">
+            <div className="space-y-4 text-xs font-mono mb-10" style={{ color: "var(--t-text-sub)" }}>
               <div className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-[#C0673F]" />
                 <span>+20 123 456 7990 (Direct & WhatsApp)</span>
@@ -740,14 +824,20 @@ export default function DirectionOneQuinta() {
           </div>
 
           <div className="lg:col-span-7">
-            <div className="p-8 sm:p-14 rounded-[3rem] border border-white/10 bg-black/40 shadow-2xl">
+            <div
+              className="p-8 sm:p-14 rounded-[3rem] border shadow-2xl"
+              style={{
+                backgroundColor: "var(--t-card-bg)",
+                borderColor: "var(--t-border)",
+              }}
+            >
               {formSubmitted ? (
                 <div className="py-16 text-center">
                   <div className="w-16 h-16 rounded-full bg-[#C0673F]/20 border border-[#C0673F] flex items-center justify-center text-[#C0673F] mx-auto mb-6">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
-                  <h3 className="text-3xl font-light font-serif mb-3 text-white">Portfolio Request Received</h3>
-                  <p className="text-sm max-w-md mx-auto font-light leading-relaxed text-[#8A8F93]">
+                  <h3 className="text-3xl font-light font-serif mb-3" style={{ color: "var(--t-text)" }}>Portfolio Request Received</h3>
+                  <p className="text-sm max-w-md mx-auto font-light leading-relaxed" style={{ color: "var(--t-text-muted)" }}>
                     Your criteria have been assigned to our managing partner. An encrypted acquisition portfolio will be delivered to your registered contact within 24 hours.
                   </p>
                 </div>
@@ -755,7 +845,7 @@ export default function DirectionOneQuinta() {
                 <form onSubmit={handleFormSubmit} className="space-y-6">
                   {/* Asset Selection Chips */}
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider mb-3 text-white">
+                    <label className="block text-xs font-bold uppercase tracking-wider mb-3" style={{ color: "var(--t-text)" }}>
                       1. Target Property Typology
                     </label>
                     <div className="flex flex-wrap gap-2">
@@ -767,7 +857,7 @@ export default function DirectionOneQuinta() {
                           className={`px-4 py-2 rounded-full text-xs transition-all font-medium border ${
                             selectedAsset === asset
                               ? "bg-[#C0673F] text-white border-[#C0673F] shadow-sm"
-                              : "border-white/10 text-[#8A8F93] hover:text-[#F7F3ED]"
+                              : "border-[var(--t-border)] text-[var(--t-text-muted)] hover:text-[var(--t-text)] hover:border-[#C0673F]/40 bg-[var(--t-surface)]"
                           }`}
                         >
                           {asset}
@@ -778,7 +868,7 @@ export default function DirectionOneQuinta() {
 
                   {/* Horizon Selection Chips */}
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider mb-3 text-white">
+                    <label className="block text-xs font-bold uppercase tracking-wider mb-3" style={{ color: "var(--t-text)" }}>
                       2. Investment Intent & Horizon
                     </label>
                     <div className="flex flex-wrap gap-2">
@@ -790,7 +880,7 @@ export default function DirectionOneQuinta() {
                           className={`px-4 py-2 rounded-full text-xs transition-all font-medium border ${
                             selectedHorizon === hor
                               ? "bg-[#C0673F] text-white border-[#C0673F] shadow-sm"
-                              : "border-white/10 text-[#8A8F93] hover:text-[#F7F3ED]"
+                              : "border-[var(--t-border)] text-[var(--t-text-muted)] hover:text-[var(--t-text)] hover:border-[#C0673F]/40 bg-[var(--t-surface)]"
                           }`}
                         >
                           {hor}
@@ -800,40 +890,62 @@ export default function DirectionOneQuinta() {
                   </div>
 
                   {/* Credentials */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-white/10">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t" style={{ borderColor: "var(--t-border)" }}>
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider mb-2 text-white">Full Name *</label>
+                      <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "var(--t-text)" }}>Full Name *</label>
                       <input
                         required
                         type="text"
                         placeholder="Your full name"
-                        className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none bg-black/60 border border-white/10 text-white focus:border-[#C0673F] transition-all"
+                        className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none border focus:border-[#C0673F] transition-all"
+                        style={{
+                          backgroundColor: "var(--t-input-bg)",
+                          borderColor: "var(--t-border)",
+                          color: "var(--t-text)",
+                        }}
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider mb-2 text-white">Email Address *</label>
+                      <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "var(--t-text)" }}>Email Address *</label>
                       <input
                         required
                         type="email"
                         placeholder="client@investments.com"
-                        className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none bg-black/60 border border-white/10 text-white focus:border-[#C0673F] transition-all"
+                        className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none border focus:border-[#C0673F] transition-all"
+                        style={{
+                          backgroundColor: "var(--t-input-bg)",
+                          borderColor: "var(--t-border)",
+                          color: "var(--t-text)",
+                        }}
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider mb-2 text-white">Phone / WhatsApp *</label>
+                      <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "var(--t-text)" }}>Phone / WhatsApp *</label>
                       <input
                         required
                         type="tel"
                         placeholder="+20 / +44 / +7 / +49..."
-                        className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none bg-black/60 border border-white/10 text-white focus:border-[#C0673F] transition-all"
+                        className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none border focus:border-[#C0673F] transition-all"
+                        style={{
+                          backgroundColor: "var(--t-input-bg)",
+                          borderColor: "var(--t-border)",
+                          color: "var(--t-text)",
+                        }}
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider mb-2 text-white">Advisory Language</label>
-                      <select className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none bg-black/60 border border-white/10 text-white focus:border-[#C0673F] transition-all">
+                      <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "var(--t-text)" }}>Advisory Language</label>
+                      <select
+                        className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none border focus:border-[#C0673F] transition-all"
+                        style={{
+                          backgroundColor: "var(--t-input-bg)",
+                          borderColor: "var(--t-border)",
+                          color: "var(--t-text)",
+                        }}
+                      >
                         <option>English</option>
                         <option>العربية (Arabic)</option>
                         <option>Русский (Russian)</option>
@@ -843,11 +955,16 @@ export default function DirectionOneQuinta() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider mb-2 text-white">Specific Criteria & Budget</label>
+                    <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "var(--t-text)" }}>Specific Criteria & Budget</label>
                     <textarea
                       rows={3}
                       placeholder="Please specify target budget, preferred square meters, or specific waterfront criteria..."
-                      className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none bg-black/60 border border-white/10 text-white focus:border-[#C0673F] transition-all resize-none"
+                      className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none border focus:border-[#C0673F] transition-all resize-none"
+                      style={{
+                        backgroundColor: "var(--t-input-bg)",
+                        borderColor: "var(--t-border)",
+                        color: "var(--t-text)",
+                      }}
                     ></textarea>
                   </div>
 

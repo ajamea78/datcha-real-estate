@@ -43,8 +43,8 @@
     --t-card-hover: #FFFFFF;
     --t-text: #1F2A2E;
     --t-text-sub: #3A4F56;
-    --t-text-muted: #8A8F93;
-    --t-border: rgba(31, 42, 46, 0.08);
+    --t-text-muted: #4A565A;
+    --t-border: rgba(31, 42, 46, 0.12);
     --t-border-hi: rgba(192, 103, 63, 0.35);
     --t-input-bg: #FFFFFF;
     --t-footer-bg: #1F2A2E;
@@ -65,6 +65,16 @@
     font-family: var(--font-montserrat), sans-serif;
     transition: background-color 0.4s ease, color 0.4s ease;
     overflow-x: hidden;
+  }
+
+  input::placeholder, textarea::placeholder {
+    color: var(--t-text-muted);
+    opacity: 0.65;
+  }
+
+  select option {
+    background-color: var(--t-input-bg);
+    color: var(--t-text);
   }
 }
 

@@ -31,13 +31,31 @@ export default function DirectionTwoAtelier() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
 
-  // Sync data-theme on html root
+  // Initialize and sync data-theme on html root
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-  }, [theme]);
+    const saved = localStorage.getItem("datcha_theme");
+    if (saved === "light" || saved === "dark") {
+      setTheme(saved);
+      document.documentElement.setAttribute("data-theme", saved);
+    } else {
+      const current = document.documentElement.getAttribute("data-theme") as "dark" | "light" | null;
+      if (current) setTheme(current);
+    }
+
+    const handleSync = () => {
+      const t = (localStorage.getItem("datcha_theme") as "dark" | "light" | null) || "dark";
+      setTheme(t);
+    };
+    window.addEventListener("storage", handleSync);
+    return () => window.removeEventListener("storage", handleSync);
+  }, []);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+    const next = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+    localStorage.setItem("datcha_theme", next);
+    document.documentElement.setAttribute("data-theme", next);
+    window.dispatchEvent(new Event("storage"));
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -81,14 +99,21 @@ export default function DirectionTwoAtelier() {
 
           {/* Atelier Style & Theme Controls */}
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="flex items-center bg-black/30 p-1 rounded-full border border-white/10">
+            <div
+              className="flex items-center p-1 rounded-full border transition-colors"
+              style={{
+                backgroundColor: "var(--t-surface)",
+                borderColor: "var(--t-border)",
+              }}
+            >
               <button
                 onClick={() => setStyleMode("A")}
                 className={`px-3 py-1 rounded-full transition-all text-[11px] font-semibold ${
                   styleMode === "A"
                     ? "bg-[#C0673F] text-white shadow-md shadow-[#C0673F]/20"
-                    : "text-white/60 hover:text-white"
+                    : "hover:text-[#C0673F]"
                 }`}
+                style={styleMode !== "A" ? { color: "var(--t-text-muted)" } : undefined}
               >
                 Cinematic
               </button>
@@ -97,8 +122,9 @@ export default function DirectionTwoAtelier() {
                 className={`px-3 py-1 rounded-full transition-all text-[11px] font-semibold ${
                   styleMode === "B"
                     ? "bg-[#C0673F] text-white shadow-md shadow-[#C0673F]/20"
-                    : "text-white/60 hover:text-white"
+                    : "hover:text-[#C0673F]"
                 }`}
+                style={styleMode !== "B" ? { color: "var(--t-text-muted)" } : undefined}
               >
                 Editorial
               </button>
@@ -106,7 +132,12 @@ export default function DirectionTwoAtelier() {
 
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-full border border-white/10 hover:border-[#C0673F] text-white/70 hover:text-white transition-all bg-white/5"
+              className="p-2 rounded-full border hover:border-[#C0673F] transition-all"
+              style={{
+                borderColor: "var(--t-border)",
+                backgroundColor: "var(--t-surface)",
+                color: "var(--t-text)",
+              }}
               title="Toggle Light/Dark"
             >
               {theme === "dark" ? <Sun className="w-3.5 h-3.5 text-[#C0673F]" /> : <Moon className="w-3.5 h-3.5 text-[#C0673F]" />}
@@ -123,7 +154,8 @@ export default function DirectionTwoAtelier() {
           {/* Mobile Hamburger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-inherit rounded-full hover:bg-white/5 transition-colors"
+            className="md:hidden p-2 rounded-full hover:bg-white/5 transition-colors"
+            style={{ color: "var(--t-text)" }}
             aria-label="Toggle Navigation"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -326,7 +358,7 @@ export default function DirectionTwoAtelier() {
             borderColor: "var(--t-border)",
           }}
         >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-y sm:divide-y-0 sm:divide-x divide-white/10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-y sm:divide-y-0 sm:divide-x divide-[var(--t-border)]">
             <div className="pt-4 sm:pt-0">
               <div className="text-3xl sm:text-4xl font-extrabold text-[#C0673F] font-serif">500+</div>
               <div className="text-xs uppercase tracking-widest font-semibold mt-1" style={{ color: "var(--t-text-muted)" }}>
@@ -439,7 +471,7 @@ export default function DirectionTwoAtelier() {
                       {loc.desc}
                     </p>
                   </div>
-                  <div className="mt-6 pt-3 border-t border-white/5 flex items-center justify-between text-xs font-bold text-[#C0673F]">
+                  <div className="mt-6 pt-3 border-t flex items-center justify-between text-xs font-bold text-[#C0673F]" style={{ borderColor: "var(--t-border)" }}>
                     <span>Explore Assets</span>
                     <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
                   </div>
@@ -545,7 +577,14 @@ export default function DirectionTwoAtelier() {
                         <span className="text-[10px] font-bold uppercase tracking-wider text-[#C0673F]">
                           {offering.tag}
                         </span>
-                        <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-black/40 text-[#DCC7B1] border border-white/10">
+                        <span
+                          className="text-[9px] font-mono px-2 py-0.5 rounded border"
+                          style={{
+                            backgroundColor: "var(--t-pill-bg)",
+                            color: "var(--t-pill-text)",
+                            borderColor: "var(--t-border)",
+                          }}
+                        >
                           {offering.badge}
                         </span>
                       </div>
@@ -558,7 +597,8 @@ export default function DirectionTwoAtelier() {
                     </div>
                     <a
                       href="#contact"
-                      className="mt-6 pt-3 border-t border-white/5 inline-flex items-center justify-between text-xs font-bold text-[#C0673F] hover:text-[#A8552F]"
+                      className="mt-6 pt-3 border-t inline-flex items-center justify-between text-xs font-bold text-[#C0673F] hover:text-[#A8552F]"
+                      style={{ borderColor: "var(--t-border)" }}
                     >
                       <span>Inquire Asset</span>
                       <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
@@ -639,7 +679,7 @@ export default function DirectionTwoAtelier() {
                       <span className="text-xs font-mono font-bold text-[#8A8F93]">{pillar.num}</span>
                     </div>
                     <h3 className="text-lg font-bold font-serif text-white mb-2">{pillar.title}</h3>
-                    <p className="text-xs text-[#8A8F93] leading-relaxed">{pillar.desc}</p>
+                    <p className="text-xs text-[#DCC7B1]/85 leading-relaxed">{pillar.desc}</p>
                   </div>
                 );
               })}
@@ -705,7 +745,7 @@ export default function DirectionTwoAtelier() {
                     {item.quote}
                   </p>
                 </div>
-                <div className="pt-4 border-t border-white/5">
+                <div className="pt-4 border-t" style={{ borderColor: "var(--t-border)" }}>
                   <div className="font-bold text-sm" style={{ color: "var(--t-text)" }}>{item.client}</div>
                   <div className="text-xs text-[#C0673F] font-medium">{item.investment}</div>
                   <div className="text-[10px]" style={{ color: "var(--t-text-muted)" }}>{item.location}</div>
@@ -760,15 +800,21 @@ export default function DirectionTwoAtelier() {
               </div>
 
               {/* Hosted VIP Discovery Tour Touchpoint */}
-              <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-[#C0673F]/20 via-black/30 to-black/50 border border-[#C0673F]/40 shadow-xl">
-                <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#DCC7B1] mb-2">
+              <div
+                className="mt-8 p-6 rounded-2xl border shadow-xl"
+                style={{
+                  backgroundColor: "var(--t-card-bg)",
+                  borderColor: "var(--t-border-hi)",
+                }}
+              >
+                <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#C0673F] mb-2 font-bold">
                   <Sparkles className="w-3.5 h-3.5 text-[#C0673F]" />
                   VIP Buyer Experience
                 </div>
-                <h4 className="font-serif text-lg text-white font-bold mb-2">
+                <h4 className="font-serif text-lg font-bold mb-2" style={{ color: "var(--t-text)" }}>
                   Complimentary 3-Day Red Sea Discovery Tour
                 </h4>
-                <p className="text-xs text-[#DCC7B1]/80 leading-relaxed mb-4">
+                <p className="text-xs leading-relaxed mb-4" style={{ color: "var(--t-text-muted)" }}>
                   For qualified international buyers & investors: private airport transfer, curated property inspections across El Gouna and Sahl Hasheesh, and 1-on-1 legal counsel on Law 230/1996.
                 </p>
                 <a
@@ -783,12 +829,17 @@ export default function DirectionTwoAtelier() {
               </div>
 
               {/* Instant WhatsApp Action */}
-              <div className="mt-6 pt-6 border-t border-white/5">
+              <div className="mt-6 pt-6 border-t" style={{ borderColor: "var(--t-border)" }}>
                 <a
                   href="https://wa.me/201234567990?text=Hello%20Datcha%20Real%20Estate,%20I%20am%20interested%20in%20Red%20Sea%20properties."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 px-7 py-3.5 bg-white/5 hover:bg-white/10 text-white border border-white/10 text-xs font-bold uppercase tracking-wider rounded-full transition-all hover:scale-[1.02]"
+                  className="inline-flex items-center gap-3 px-7 py-3.5 border text-xs font-bold uppercase tracking-wider rounded-full transition-all hover:scale-[1.02] shadow-sm"
+                  style={{
+                    backgroundColor: "var(--t-surface)",
+                    borderColor: "var(--t-border)",
+                    color: "var(--t-text)",
+                  }}
                 >
                   <MessageCircle className="w-4 h-4 text-[#25D366]" />
                   <span>Direct Concierge Chat</span>
