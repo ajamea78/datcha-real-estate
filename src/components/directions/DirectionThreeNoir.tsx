@@ -131,7 +131,6 @@ const RESIDENCES: ResidenceSpec[] = [
 export default function DirectionThreeNoir() {
   const [atmosphere, setAtmosphere] = useState<"dusk" | "midnight" | "golden">("dusk");
   const [activeResidence, setActiveResidence] = useState<ResidenceSpec>(RESIDENCES[0]);
-  const [soundEnabled, setSoundEnabled] = useState(false);
   const [vaultUnlocked, setVaultUnlocked] = useState(false);
   const [inquirySubmitted, setInquirySubmitted] = useState(false);
   const [activeTab, setActiveTab] = useState<"specs" | "investment">("specs");
@@ -259,7 +258,7 @@ export default function DirectionThreeNoir() {
             <a href="#horizon-selector" className="hover:text-white transition-colors">
               01 // Residences
             </a>
-            <a href="#spatial-specs" className="hover:text-white transition-colors">
+            <a href="#specifications" className="hover:text-white transition-colors">
               02 // Specifications
             </a>
             <a href="#private-vault" className="hover:text-white transition-colors">
@@ -271,13 +270,12 @@ export default function DirectionThreeNoir() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => setSoundEnabled(!soundEnabled)}
-              className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center text-white/60 hover:text-white hover:border-white/30 transition-all"
-              title="Ambient Acoustic Immersion"
+            <a
+              href="#concierge"
+              className="hidden sm:inline-flex px-4 py-2 rounded-full border border-white/20 text-white hover:border-[#D4AF37] hover:text-[#D4AF37] transition-all text-xs font-mono uppercase tracking-wider"
             >
-              {soundEnabled ? <Volume2 className="w-4 h-4 text-[#D4AF37]" /> : <VolumeX className="w-4 h-4" />}
-            </button>
+              Contact Us
+            </a>
             <a
               href="#private-vault"
               className="px-4 py-2 rounded-full border border-[#D4AF37]/40 bg-[#D4AF37]/10 hover:bg-[#D4AF37] hover:text-black transition-all text-xs font-mono uppercase tracking-wider text-[#D4AF37] flex items-center gap-1.5"
@@ -486,7 +484,7 @@ export default function DirectionThreeNoir() {
           </div>
 
           {/* Right: Floor Plan & Property Specs */}
-          <div className="lg:col-span-5 flex flex-col justify-between h-full space-y-6">
+          <div id="specifications" className="lg:col-span-5 flex flex-col justify-between h-full space-y-6 scroll-mt-28">
             <div>
               {/* Interactive View Mode Selector */}
               <div className="flex items-center justify-between mb-4 border-b border-white/10 pb-3">
@@ -603,7 +601,7 @@ export default function DirectionThreeNoir() {
                 Request Floor Plans & Brochure
               </a>
               <a
-                href={`https://wa.me/201099999999?text=Inquiry%20regarding%20${encodeURIComponent(activeResidence.name)}`}
+                href={`https://wa.me/201234567990?text=Inquiry%20regarding%20${encodeURIComponent(activeResidence.name)}`}
                 target="_blank"
                 rel="noreferrer"
                 className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:text-emerald-400 hover:border-emerald-400/50 transition-all"
@@ -765,6 +763,23 @@ export default function DirectionThreeNoir() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
+                const formData = new FormData(e.currentTarget);
+                const lead = {
+                  direction: "Direction 3 - Horizon Noir",
+                  name: (formData.get("name") as string) || "Anonymous",
+                  phone: (formData.get("phone") as string) || "",
+                  email: (formData.get("email") as string) || "",
+                  budget: (formData.get("budget") as string) || "",
+                  notes: (formData.get("notes") as string) || "",
+                  timestamp: new Date().toISOString(),
+                };
+                try {
+                  const existing = JSON.parse(localStorage.getItem("datcha_inquiries") || "[]");
+                  existing.push(lead);
+                  localStorage.setItem("datcha_inquiries", JSON.stringify(existing));
+                } catch {
+                  // silent fallback
+                }
                 setInquirySubmitted(true);
               }}
               className="space-y-6"
@@ -776,6 +791,7 @@ export default function DirectionThreeNoir() {
                   </label>
                   <input
                     required
+                    name="name"
                     type="text"
                     placeholder="Your full name"
                     className="w-full px-4 py-3 rounded-lg bg-black/50 border border-white/15 text-sm text-white focus:outline-none focus:border-[#D4AF37]"
@@ -787,6 +803,7 @@ export default function DirectionThreeNoir() {
                   </label>
                   <input
                     required
+                    name="phone"
                     type="tel"
                     placeholder="+20 / +44 / +7 / +49..."
                     className="w-full px-4 py-3 rounded-lg bg-black/50 border border-white/15 text-sm text-white focus:outline-none focus:border-[#D4AF37]"
@@ -801,6 +818,7 @@ export default function DirectionThreeNoir() {
                   </label>
                   <input
                     required
+                    name="email"
                     type="email"
                     placeholder="yourname@domain.com"
                     className="w-full px-4 py-3 rounded-lg bg-black/50 border border-white/15 text-sm text-white focus:outline-none focus:border-[#D4AF37]"
@@ -810,7 +828,7 @@ export default function DirectionThreeNoir() {
                   <label className="block text-[11px] font-mono uppercase tracking-wider text-white/50 mb-2">
                     Target Budget
                   </label>
-                  <select className="w-full px-4 py-3 rounded-lg bg-black/50 border border-white/15 text-sm text-white focus:outline-none focus:border-[#D4AF37]">
+                  <select name="budget" className="w-full px-4 py-3 rounded-lg bg-black/50 border border-white/15 text-sm text-white focus:outline-none focus:border-[#D4AF37]">
                     <option>€1,500,000 – €3,000,000 (Ready-to-Move Penthouse / Villa)</option>
                     <option>€3,000,000 – €6,000,000 (Off-Plan Waterfront · 5-7 Yr 0% Plan)</option>
                     <option>€6,000,000 – €15,000,000+ (Private Island / Trophy Reserve)</option>
@@ -824,6 +842,7 @@ export default function DirectionThreeNoir() {
                   Property Requirements & Notes
                 </label>
                 <textarea
+                  name="notes"
                   rows={3}
                   placeholder="Specify preferred location (El Gouna, Sahl Hasheesh, Somabay), number of bedrooms, or special requests..."
                   className="w-full px-4 py-3 rounded-lg bg-black/50 border border-white/15 text-sm text-white focus:outline-none focus:border-[#D4AF37]"
@@ -862,6 +881,18 @@ export default function DirectionThreeNoir() {
           </div>
         </div>
       </footer>
+
+      {/* Floating WhatsApp Action Pill */}
+      <a
+        href="https://wa.me/201234567990?text=Hello%20Datcha%20Real%20Estate%20Advisors"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-24 sm:bottom-6 right-5 sm:right-6 z-50 w-14 h-14 bg-[#25D366] hover:bg-[#20BA59] text-white rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110"
+        title="Direct WhatsApp Advisors"
+        aria-label="WhatsApp Contact"
+      >
+        <MessageCircle className="w-7 h-7" />
+      </a>
     </div>
   );
 }

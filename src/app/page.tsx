@@ -1,11 +1,33 @@
 "use client";
 
 import React, { useState, useEffect, Suspense } from "react";
+import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { Sparkles, Layers, Check, ChevronDown, ChevronUp, Eye, EyeOff, Sun, Moon } from "lucide-react";
-import DirectionOneQuinta from "@/components/directions/DirectionOneQuinta";
-import DirectionTwoAtelier from "@/components/directions/DirectionTwoAtelier";
-import DirectionThreeNoir from "@/components/directions/DirectionThreeNoir";
+
+const DirectionSkeleton = () => (
+  <div className="min-h-screen bg-[#0E1317] flex items-center justify-center">
+    <div className="flex flex-col items-center gap-4">
+      <div className="w-12 h-12 rounded-full border-2 border-[#C0673F] border-t-transparent animate-spin" />
+      <span className="text-xs font-mono uppercase tracking-[0.3em] text-[#DCC7B1]/70">
+        Loading Datcha Architecture...
+      </span>
+    </div>
+  </div>
+);
+
+const DirectionOneQuinta = dynamic(
+  () => import("@/components/directions/DirectionOneQuinta"),
+  { loading: () => <DirectionSkeleton /> }
+);
+const DirectionTwoAtelier = dynamic(
+  () => import("@/components/directions/DirectionTwoAtelier"),
+  { loading: () => <DirectionSkeleton /> }
+);
+const DirectionThreeNoir = dynamic(
+  () => import("@/components/directions/DirectionThreeNoir"),
+  { loading: () => <DirectionSkeleton /> }
+);
 
 type DirectionId = "1" | "2" | "3";
 

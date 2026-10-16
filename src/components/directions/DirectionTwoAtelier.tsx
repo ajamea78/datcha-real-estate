@@ -58,8 +58,28 @@ export default function DirectionTwoAtelier() {
     window.dispatchEvent(new Event("storage"));
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const lead = {
+      direction: "Direction 2 - Atelier Mediterranean",
+      name: (formData.get("name") as string) || "Anonymous",
+      email: (formData.get("email") as string) || "",
+      phone: (formData.get("phone") as string) || "",
+      language: (formData.get("language") as string) || "",
+      assetClass: (formData.get("assetClass") as string) || "",
+      destination: (formData.get("destination") as string) || "",
+      plan: (formData.get("plan") as string) || "",
+      message: (formData.get("message") as string) || "",
+      timestamp: new Date().toISOString(),
+    };
+    try {
+      const existing = JSON.parse(localStorage.getItem("datcha_inquiries") || "[]");
+      existing.push(lead);
+      localStorage.setItem("datcha_inquiries", JSON.stringify(existing));
+    } catch {
+      // silent fallback
+    }
     setFormSubmitted(true);
     setTimeout(() => setFormSubmitted(false), 5000);
   };
@@ -266,10 +286,10 @@ export default function DirectionTwoAtelier() {
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a
-                  href="#contact"
+                  href="#offerings"
                   className="w-full sm:w-auto px-8 py-4 bg-[#C0673F] hover:bg-[#A8552F] text-white text-xs font-bold uppercase tracking-widest transition-all rounded-full shadow-xl shadow-[#C0673F]/30 flex items-center justify-center gap-3 group hover:scale-[1.02]"
                 >
-                  <span>Explore Offerings</span>
+                  <span>Explore Properties</span>
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </a>
                 <a
@@ -874,6 +894,7 @@ export default function DirectionTwoAtelier() {
                         </label>
                         <input
                           required
+                          name="name"
                           type="text"
                           placeholder="Lord / Lady / Mr / Ms..."
                           className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-all shadow-inner"
@@ -890,6 +911,7 @@ export default function DirectionTwoAtelier() {
                         </label>
                         <input
                           required
+                          name="email"
                           type="email"
                           placeholder="client@investments.com"
                           className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-all shadow-inner"
@@ -909,6 +931,7 @@ export default function DirectionTwoAtelier() {
                         </label>
                         <input
                           required
+                          name="phone"
                           type="tel"
                           placeholder="+20 / +44 / +7 / +49..."
                           className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-all shadow-inner"
@@ -924,6 +947,7 @@ export default function DirectionTwoAtelier() {
                           Preferred Language
                         </label>
                         <select
+                          name="language"
                           className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-all"
                           style={{
                             backgroundColor: "var(--t-input-bg)",
@@ -945,6 +969,7 @@ export default function DirectionTwoAtelier() {
                           Asset Class of Interest
                         </label>
                         <select
+                          name="assetClass"
                           className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-all"
                           style={{
                             backgroundColor: "var(--t-input-bg)",
@@ -964,6 +989,7 @@ export default function DirectionTwoAtelier() {
                           Target Destination
                         </label>
                         <select
+                          name="destination"
                           className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-all"
                           style={{
                             backgroundColor: "var(--t-input-bg)",
@@ -985,6 +1011,7 @@ export default function DirectionTwoAtelier() {
                         Preferred Timeline & Payment Plan
                       </label>
                       <select
+                        name="plan"
                         className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-all"
                         style={{
                           backgroundColor: "var(--t-input-bg)",
@@ -1005,6 +1032,7 @@ export default function DirectionTwoAtelier() {
                         Message & Property Requirements
                       </label>
                       <textarea
+                        name="message"
                         rows={4}
                         placeholder="Please specify desired timelines, space criteria, or specific requirements..."
                         className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-all resize-none shadow-inner"
@@ -1050,8 +1078,8 @@ export default function DirectionTwoAtelier() {
 
           <div className="flex flex-wrap justify-center gap-6 text-xs uppercase tracking-widest text-[#8A8F93]">
             <a href="#destinations" className="hover:text-[#C0673F]">Destinations</a>
-            <a href="#offerings" className="hover:text-[#C0673F]">Offerings</a>
-            <a href="#why-us" className="hover:text-[#C0673F]">Why Us</a>
+            <a href="#offerings" className="hover:text-[#C0673F]">Properties</a>
+            <a href="#why-us" className="hover:text-[#C0673F]">Why Datcha</a>
             <a href="#testimonials" className="hover:text-[#C0673F]">Testimonials</a>
             <a href="#contact" className="hover:text-[#C0673F]">Contact</a>
           </div>
@@ -1070,7 +1098,7 @@ export default function DirectionTwoAtelier() {
         href="https://wa.me/201234567990?text=Hello%20Datcha%20Real%20Estate"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 left-6 z-40 w-14 h-14 bg-[#25D366] hover:bg-[#20BA59] text-white rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110"
+        className="fixed bottom-24 sm:bottom-6 right-5 sm:right-6 z-50 w-14 h-14 bg-[#25D366] hover:bg-[#20BA59] text-white rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110"
         title="Chat on WhatsApp"
         aria-label="WhatsApp Contact"
       >

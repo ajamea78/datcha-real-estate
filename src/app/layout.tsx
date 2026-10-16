@@ -17,6 +17,7 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://datcharealestate.com"),
   title: "Datcha Real Estate | Red Sea Luxury Architectural Brokerage",
   description:
     "More than properties. A lifestyle by the Red Sea. Prime land plots, sea-view apartments, luxury villas, and commercial real estate across Hurghada, El Gouna, Sahl Hasheesh, Makadi Bay, and Soma Bay.",
@@ -30,6 +31,33 @@ export const metadata: Metadata = {
   ],
   icons: {
     icon: "/logo-dark.png",
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
+  openGraph: {
+    title: "Datcha Real Estate | Red Sea Luxury Architectural Brokerage",
+    description:
+      "More than properties. A lifestyle by the Red Sea. Prime coastal land, sea-view residences, and high-return commercial opportunities.",
+    images: [
+      {
+        url: "/brand-hero-pool.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Datcha Real Estate Luxury Red Sea Waterfront Properties",
+      },
+    ],
+    siteName: "Datcha Real Estate",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Datcha Real Estate | Red Sea Luxury Architectural Brokerage",
+    description:
+      "More than properties. A lifestyle by the Red Sea. Prime coastal land, sea-view residences, and high-return commercial opportunities.",
+    images: ["/brand-hero-pool.jpg"],
   },
 };
 

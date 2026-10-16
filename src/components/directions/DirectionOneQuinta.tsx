@@ -76,8 +76,27 @@ export default function DirectionOneQuinta() {
     }
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const lead = {
+      direction: "Direction 1 - Quinta Architectural",
+      assetType: selectedAsset,
+      purchasePurpose: selectedHorizon,
+      name: (formData.get("name") as string) || "Anonymous",
+      email: (formData.get("email") as string) || "",
+      phone: (formData.get("phone") as string) || "",
+      language: (formData.get("language") as string) || "",
+      notes: (formData.get("notes") as string) || "",
+      timestamp: new Date().toISOString(),
+    };
+    try {
+      const existing = JSON.parse(localStorage.getItem("datcha_inquiries") || "[]");
+      existing.push(lead);
+      localStorage.setItem("datcha_inquiries", JSON.stringify(existing));
+    } catch {
+      // silent fallback
+    }
     setFormSubmitted(true);
     setTimeout(() => setFormSubmitted(false), 7000);
   };
@@ -751,6 +770,7 @@ export default function DirectionOneQuinta() {
                 client: "م. طارق عبد العزيز",
                 loc: "Cairo, Egypt",
                 deal: "Commercial Plot, Hurghada",
+                isRtl: true,
               },
             ].map((testi, idx) => (
               <div
@@ -763,7 +783,13 @@ export default function DirectionOneQuinta() {
               >
                 <div>
                   <div className="text-4xl font-serif text-[#C0673F] mb-4">“</div>
-                  <p className="text-sm italic font-light leading-relaxed mb-6" style={{ color: "var(--t-text)" }}>{testi.quote}</p>
+                  <p
+                    className={`text-sm ${testi.isRtl ? "text-right font-sans" : "italic"} font-light leading-relaxed mb-6`}
+                    dir={testi.isRtl ? "rtl" : "ltr"}
+                    style={{ color: "var(--t-text)" }}
+                  >
+                    {testi.quote}
+                  </p>
                 </div>
                 <div className="pt-4 border-t" style={{ borderColor: "var(--t-border)" }}>
                   <div className="text-sm font-serif font-bold" style={{ color: "var(--t-text)" }}>{testi.client}</div>
@@ -914,6 +940,7 @@ export default function DirectionOneQuinta() {
                       <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "var(--t-text)" }}>Full Name *</label>
                       <input
                         required
+                        name="name"
                         type="text"
                         placeholder="Your full name"
                         className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none border focus:border-[#C0673F] transition-all"
@@ -928,6 +955,7 @@ export default function DirectionOneQuinta() {
                       <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "var(--t-text)" }}>Email Address *</label>
                       <input
                         required
+                        name="email"
                         type="email"
                         placeholder="client@investments.com"
                         className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none border focus:border-[#C0673F] transition-all"
@@ -945,6 +973,7 @@ export default function DirectionOneQuinta() {
                       <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "var(--t-text)" }}>Phone / WhatsApp *</label>
                       <input
                         required
+                        name="phone"
                         type="tel"
                         placeholder="+20 / +44 / +7 / +49..."
                         className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none border focus:border-[#C0673F] transition-all"
@@ -958,6 +987,7 @@ export default function DirectionOneQuinta() {
                     <div>
                       <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "var(--t-text)" }}>Preferred Language</label>
                       <select
+                        name="language"
                         className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none border focus:border-[#C0673F] transition-all"
                         style={{
                           backgroundColor: "var(--t-input-bg)",
@@ -976,6 +1006,7 @@ export default function DirectionOneQuinta() {
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "var(--t-text)" }}>Property Requirements & Budget</label>
                     <textarea
+                      name="notes"
                       rows={3}
                       placeholder="Please specify target budget, preferred location (El Gouna, Sahl Hasheesh, etc.), or specific waterfront requirements..."
                       className="w-full px-5 py-3.5 rounded-2xl text-sm outline-none border focus:border-[#C0673F] transition-all resize-none"
@@ -1027,7 +1058,7 @@ export default function DirectionOneQuinta() {
         href="https://wa.me/201234567990?text=Hello%20Datcha%20Real%20Estate"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25D366] hover:bg-[#20BA59] text-white rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110"
+        className="fixed bottom-24 sm:bottom-6 right-5 sm:right-6 z-50 w-14 h-14 bg-[#25D366] hover:bg-[#20BA59] text-white rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110"
         title="Direct WhatsApp Concierge"
         aria-label="WhatsApp Contact"
       >
